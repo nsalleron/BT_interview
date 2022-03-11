@@ -3,7 +3,6 @@ import 'package:flutball/core/resources/data_state.dart';
 import 'package:flutball/data/repositories/football_repository.dart';
 import 'package:flutball/domain/entities/team.dart';
 import 'package:flutball/domain/usecases/usecase.dart';
-import 'package:dio/dio.dart';
 
 class GetTeamUseCase implements UseCase<DataState<Team>, TeamRequestParams> {
   final FootballRepository _footballRepository;
@@ -12,12 +11,6 @@ class GetTeamUseCase implements UseCase<DataState<Team>, TeamRequestParams> {
 
   @override
   Future<DataState<Team>> call(TeamRequestParams params) {
-    return Future.value(
-      DataFailed<Team>(
-        DioError(
-          requestOptions: RequestOptions(path: ''),
-        ),
-      ),
-    );
+    return _footballRepository.getTeams(params);
   }
 }
