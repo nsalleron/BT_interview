@@ -15,25 +15,32 @@ import 'competition_cubit_test.mocks.dart';
 
 @GenerateMocks([GetCompetitionUseCase])
 void main() {
-  final GetCompetitionUseCase mockGetCompetitionUseCase = MockGetCompetitionUseCase();
-  CompetitionCubit retrieveNewCubit(GetCompetitionUseCase getCompetitionUseCase) =>
+  final GetCompetitionUseCase mockGetCompetitionUseCase =
+      MockGetCompetitionUseCase();
+  CompetitionCubit retrieveNewCubit(
+    GetCompetitionUseCase getCompetitionUseCase,
+  ) =>
       CompetitionCubit(getCompetitionUseCase: getCompetitionUseCase);
 
   late CompetitionsRequestParams currentParams;
 
   group('$CompetitionCubit', () {
     test('Initial state is $CompetitionInitial', () {
-      expect(retrieveNewCubit(mockGetCompetitionUseCase).state, isA<CompetitionInitial>());
+      expect(
+        retrieveNewCubit(mockGetCompetitionUseCase).state,
+        isA<CompetitionInitial>(),
+      );
     });
 
     blocTest<CompetitionCubit, CompetitionState>(
-      'emits [$CompetitionLoading, $CompetitionSuccess] when fetchCompetition is success',
+      '''emits [$CompetitionLoading, $CompetitionSuccess] when fetchCompetition is success''',
       setUp: () {
-        currentParams = CompetitionsRequestParams();
+        currentParams = const CompetitionsRequestParams();
       },
       build: () {
-        when(mockGetCompetitionUseCase(currentParams))
-            .thenAnswer((_) async => DataSuccess<Competitions?>([competitionFixture()]));
+        when(mockGetCompetitionUseCase(currentParams)).thenAnswer(
+          (_) async => DataSuccess<Competitions?>([competitionFixture()]),
+        );
 
         return retrieveNewCubit(mockGetCompetitionUseCase);
       },
@@ -45,9 +52,9 @@ void main() {
     );
 
     blocTest<CompetitionCubit, CompetitionState>(
-      'emits [$CompetitionLoading, $CompetitionFailure] when fetchCompetition is failure',
+      '''emits [$CompetitionLoading, $CompetitionFailure] when fetchCompetition is failure''',
       setUp: () {
-        currentParams = CompetitionsRequestParams();
+        currentParams = const CompetitionsRequestParams();
       },
       build: () {
         when(mockGetCompetitionUseCase(currentParams)).thenAnswer(

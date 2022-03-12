@@ -2,13 +2,6 @@ import 'package:equatable/equatable.dart';
 import 'package:flutball/domain/entities/stop_time.dart';
 
 class Score extends Equatable {
-  final String? winner;
-  final String? duration;
-  final StopTime? fullTime;
-  final StopTime? halfTime;
-  final StopTime? extraTime;
-  final StopTime? penalties;
-
   const Score({
     this.winner,
     this.duration,
@@ -17,6 +10,13 @@ class Score extends Equatable {
     this.extraTime,
     this.penalties,
   });
+
+  final String? winner;
+  final String? duration;
+  final StopTime? fullTime;
+  final StopTime? halfTime;
+  final StopTime? extraTime;
+  final StopTime? penalties;
 
   @override
   List<Object?> get props => [

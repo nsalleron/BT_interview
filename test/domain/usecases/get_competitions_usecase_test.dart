@@ -13,31 +13,33 @@ import 'get_competitions_usecase_test.mocks.dart';
 
 @GenerateMocks([FootballRepository])
 void main() {
-  late FootballRepository _footballRepository = MockFootballRepository();
-  late GetCompetitionUseCase _getCompetitionUseCase;
+  final FootballRepository footballRepository = MockFootballRepository();
+  late GetCompetitionUseCase getCompetitionUseCase;
 
   setUp(() {
-    _getCompetitionUseCase = GetCompetitionUseCase(_footballRepository);
+    getCompetitionUseCase = GetCompetitionUseCase(footballRepository);
   });
 
   group('FootballRepository', () {
     test('''
     GIVEN competitionsRequestParams and  data
-    WHEN _getCompetitionUseCase 
+    WHEN getCompetitionUseCase 
     THEN data are equals and repository is called once
     ''', () async {
       //Given
-      final CompetitionsRequestParams competitionsRequestParams = CompetitionsRequestParams();
+      const CompetitionsRequestParams competitionsRequestParams =
+          CompetitionsRequestParams();
       final data = <Competition>[competitionFixture()];
-      when(_footballRepository.getCompetitions(competitionsRequestParams))
+      when(footballRepository.getCompetitions(competitionsRequestParams))
           .thenAnswer((_) async => DataSuccess<Competitions>(data));
 
       //When
-      final result = await _getCompetitionUseCase(competitionsRequestParams);
+      final result = await getCompetitionUseCase(competitionsRequestParams);
 
       //Then
       expect(result.data, data);
-      verify(_footballRepository.getCompetitions(competitionsRequestParams)).called(1);
+      verify(footballRepository.getCompetitions(competitionsRequestParams))
+          .called(1);
     });
   });
 }

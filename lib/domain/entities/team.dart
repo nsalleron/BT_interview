@@ -4,23 +4,6 @@ import 'package:flutball/domain/entities/area.dart';
 import 'package:flutball/domain/entities/squad.dart';
 
 class Team extends Equatable {
-  final int? id;
-  final Area? area;
-  final List<ActiveCompetitions>? activeCompetitions;
-  final String? name;
-  final String? shortName;
-  final String? tla;
-  final String? crestUrl;
-  final String? address;
-  final String? phone;
-  final String? website;
-  final String? email;
-  final int? founded;
-  final String? clubColors;
-  final String? venue;
-  final List<Squad>? squad;
-  final String? lastUpdated;
-
   const Team({
     this.id,
     this.area,
@@ -39,6 +22,23 @@ class Team extends Equatable {
     this.squad,
     this.lastUpdated,
   });
+
+  final int? id;
+  final Area? area;
+  final List<ActiveCompetitions>? activeCompetitions;
+  final String? name;
+  final String? shortName;
+  final String? tla;
+  final String? crestUrl;
+  final String? address;
+  final String? phone;
+  final String? website;
+  final String? email;
+  final int? founded;
+  final String? clubColors;
+  final String? venue;
+  final List<Squad>? squad;
+  final String? lastUpdated;
 
   @override
   List<Object?> get props => [

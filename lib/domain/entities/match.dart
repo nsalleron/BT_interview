@@ -6,19 +6,6 @@ import 'package:flutball/domain/entities/score.dart';
 import 'package:flutball/domain/entities/season.dart';
 
 class Match extends Equatable {
-  final int? id;
-  final Season? season;
-  final String? utcDate;
-  final String? status;
-  final int? matchday;
-  final String? stage;
-  final String? lastUpdated;
-  final Odds? odds;
-  final Score? score;
-  final LocalTeam homeTeam;
-  final LocalTeam awayTeam;
-  final List<Referees>? referees;
-
   const Match({
     this.id,
     this.season,
@@ -33,6 +20,19 @@ class Match extends Equatable {
     required this.awayTeam,
     this.referees,
   });
+
+  final int? id;
+  final Season? season;
+  final String? utcDate;
+  final String? status;
+  final int? matchday;
+  final String? stage;
+  final String? lastUpdated;
+  final Odds? odds;
+  final Score? score;
+  final LocalTeam homeTeam;
+  final LocalTeam awayTeam;
+  final List<Referees>? referees;
 
   @override
   List<Object?> get props => [

@@ -2,13 +2,6 @@ import 'package:equatable/equatable.dart';
 import 'package:flutball/domain/entities/area.dart';
 
 class ActiveCompetitions extends Equatable {
-  final int? id;
-  final Area? area;
-  final String? name;
-  final String? code;
-  final String? plan;
-  final String? lastUpdated;
-
   const ActiveCompetitions({
     this.id,
     this.area,
@@ -17,6 +10,13 @@ class ActiveCompetitions extends Equatable {
     this.plan,
     this.lastUpdated,
   });
+
+  final int? id;
+  final Area? area;
+  final String? name;
+  final String? code;
+  final String? plan;
+  final String? lastUpdated;
 
   @override
   List<Object?> get props => [

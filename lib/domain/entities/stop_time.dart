@@ -1,10 +1,10 @@
 import 'package:equatable/equatable.dart';
 
 class StopTime extends Equatable {
+  const StopTime({this.homeTeam, this.awayTeam});
+
   final int? homeTeam;
   final int? awayTeam;
-
-  StopTime({this.homeTeam, this.awayTeam});
 
   @override
   bool? get stringify => true;

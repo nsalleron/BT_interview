@@ -12,30 +12,31 @@ import 'get_team_usecase_test.mocks.dart';
 
 @GenerateMocks([FootballRepository])
 void main() {
-  late FootballRepository _footballRepository = MockFootballRepository();
-  late GetTeamUseCase _getTeamUseCase;
+  final FootballRepository footballRepository = MockFootballRepository();
+  late GetTeamUseCase getTeamUseCase;
 
   setUp(() {
-    _getTeamUseCase = GetTeamUseCase(_footballRepository);
+    getTeamUseCase = GetTeamUseCase(footballRepository);
   });
 
   group('FootballRepository', () {
     test('''
     GIVEN teamRequestParams and data
-    WHEN _getTeamUseCase 
+    WHEN getTeamUseCase 
     THEN data are equals and repository is called once
     ''', () async {
       //Given
-      final TeamRequestParams teamRequestParams = TeamRequestParams(teamId: 0);
+      const TeamRequestParams teamRequestParams = TeamRequestParams(teamId: 0);
       final data = teamFixture();
-      when(_footballRepository.getTeams(teamRequestParams)).thenAnswer((_) async => DataSuccess<Team>(data));
+      when(footballRepository.getTeams(teamRequestParams))
+          .thenAnswer((_) async => DataSuccess<Team>(data));
 
       //When
-      final result = await _getTeamUseCase(teamRequestParams);
+      final result = await getTeamUseCase(teamRequestParams);
 
       //Then
       expect(result.data, data);
-      verify(_footballRepository.getTeams(teamRequestParams)).called(1);
+      verify(footballRepository.getTeams(teamRequestParams)).called(1);
     });
   });
 }

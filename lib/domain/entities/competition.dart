@@ -3,16 +3,6 @@ import 'package:flutball/domain/entities/area.dart';
 import 'package:flutball/domain/entities/current_season.dart';
 
 class Competition extends Equatable {
-  final int id;
-  final Area? area;
-  final String name;
-  final String? code;
-  final String? emblemUrl;
-  final String plan;
-  final CurrentSeason currentSeason;
-  final int numberOfAvailableSeasons;
-  final String lastUpdated;
-
   const Competition({
     required this.id,
     required this.area,
@@ -24,6 +14,16 @@ class Competition extends Equatable {
     required this.numberOfAvailableSeasons,
     required this.lastUpdated,
   });
+
+  final int id;
+  final Area? area;
+  final String name;
+  final String? code;
+  final String? emblemUrl;
+  final String plan;
+  final CurrentSeason currentSeason;
+  final int numberOfAvailableSeasons;
+  final String lastUpdated;
 
   @override
   List<Object?> get props => [

@@ -1,13 +1,13 @@
 import 'package:equatable/equatable.dart';
 
 class LocalTeam extends Equatable {
-  final int id;
-  final String? name;
-
   const LocalTeam({
     required this.id,
     this.name,
   });
+
+  final int id;
+  final String? name;
 
   @override
   List<Object?> get props => [

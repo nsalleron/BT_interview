@@ -5,9 +5,9 @@ import 'package:flutball/domain/entities/team.dart';
 import 'package:flutball/domain/usecases/usecase.dart';
 
 class GetTeamUseCase implements UseCase<DataState<Team>, TeamRequestParams> {
-  final FootballRepository _footballRepository;
-
   GetTeamUseCase(this._footballRepository);
+
+  final FootballRepository _footballRepository;
 
   @override
   Future<DataState<Team>> call(TeamRequestParams params) {

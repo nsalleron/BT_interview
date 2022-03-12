@@ -12,7 +12,7 @@ import 'extensions_test.mocks.dart';
 
 @GenerateMocks([RequestOptions])
 void main() {
-  late RequestOptions _requestOptions = MockRequestOptions();
+  final RequestOptions requestOptions = MockRequestOptions();
 
   group('extension tests', () {
     test('''
@@ -21,14 +21,19 @@ void main() {
     THEN should have competitions results 
     ''', () async {
       //Given
-      final CompetitionResponseModel competitionResponseModel = competitionResponseModelFixture();
+      final CompetitionResponseModel competitionResponseModel =
+          competitionResponseModelFixture();
       final httpResponse = HttpResponse<CompetitionResponseModel>(
         competitionResponseModel,
-        Response<RequestOptions>(requestOptions: _requestOptions, statusCode: HttpStatus.ok),
+        Response<RequestOptions>(
+          requestOptions: requestOptions,
+          statusCode: HttpStatus.ok,
+        ),
       );
 
       //when
-      final result = httpResponse.whenSuccessOrDefaultError((response) => response.competitions);
+      final result = httpResponse
+          .whenSuccessOrDefaultError((response) => response.competitions);
 
       //Then
       expect(result.data, competitionResponseModel.competitions);
@@ -42,11 +47,15 @@ void main() {
       //Given
       final httpResponse = HttpResponse<CompetitionResponseModel?>(
         null,
-        Response<RequestOptions>(requestOptions: _requestOptions, statusCode: HttpStatus.badGateway),
+        Response<RequestOptions>(
+          requestOptions: requestOptions,
+          statusCode: HttpStatus.badGateway,
+        ),
       );
 
       //when
-      final result = httpResponse.whenSuccessOrDefaultError((response) => response?.competitions);
+      final result = httpResponse
+          .whenSuccessOrDefaultError((response) => response?.competitions);
 
       //Then
       expect(result.data, null);

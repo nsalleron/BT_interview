@@ -1,15 +1,6 @@
 import 'package:equatable/equatable.dart';
 
 class Squad extends Equatable {
-  final int? id;
-  final String? name;
-  final String? position;
-  final String? dateOfBirth;
-  final String? countryOfBirth;
-  final String? nationality;
-  final int? shirtNumber;
-  final String? role;
-
   const Squad({
     this.id,
     this.name,
@@ -20,6 +11,15 @@ class Squad extends Equatable {
     this.shirtNumber,
     this.role,
   });
+
+  final int? id;
+  final String? name;
+  final String? position;
+  final String? dateOfBirth;
+  final String? countryOfBirth;
+  final String? nationality;
+  final int? shirtNumber;
+  final String? role;
 
   @override
   List<Object?> get props => [
