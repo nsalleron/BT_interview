@@ -32,9 +32,7 @@ jobs:
     - name: Remove generated files from code coverage report and entities / models /!\
       run: lcov --remove coverage/lcov.info 'lib/**.gr.dart' 'lib/**.g.dart' 'lib/**.g.dart' 'lib/**/**/**/*.g.dart' 'lib/data/models/*' 'lib/domain/entities/*' -o coverage/lcov.info
     - name: Upload coverage to Codecov
-      uses: codecov/codecov-actions@v1.2.1
-      with:
-        file: coverage/lcov.info
+      run: ./codecov
     - name: Build APK
       run: flutter build apk
     - name: Build AppBundle

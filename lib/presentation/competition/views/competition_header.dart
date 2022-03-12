@@ -17,10 +17,7 @@ class CompetitionHeader extends StatelessWidget {
         children: [
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              GlobalHeaderInformation(comp: comp),
-              ClubIcon(url: comp.emblemUrl)
-            ],
+            children: [GlobalHeaderInformation(comp: comp), ClubIcon(url: comp.emblemUrl)],
           ),
         ],
       ),

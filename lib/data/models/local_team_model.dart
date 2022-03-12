@@ -1,5 +1,4 @@
 import 'package:flutball/domain/entities/home_team.dart';
-
 import 'package:json_annotation/json_annotation.dart';
 
 part 'local_team_model.g.dart';
@@ -11,8 +10,7 @@ class LocalTeamModel extends LocalTeam {
     String? name,
   }) : super(id: id, name: name);
 
-  factory LocalTeamModel.fromJson(Map<String, dynamic> json) =>
-      _$LocalTeamModelFromJson(json);
+  factory LocalTeamModel.fromJson(Map<String, dynamic> json) => _$LocalTeamModelFromJson(json);
 
   Map<String, dynamic> toJson() => _$LocalTeamModelToJson(this);
 }

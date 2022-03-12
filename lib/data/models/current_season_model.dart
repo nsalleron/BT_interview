@@ -21,8 +21,7 @@ class CurrentSeasonModel extends CurrentSeason {
           winner: winnerModel,
         );
 
-  factory CurrentSeasonModel.fromJson(Map<String, dynamic> json) =>
-      _$CurrentSeasonModelFromJson(json);
+  factory CurrentSeasonModel.fromJson(Map<String, dynamic> json) => _$CurrentSeasonModelFromJson(json);
 
   @JsonKey(fromJson: winnerFromJson, toJson: winnerToJson)
   final WinnerModel? winnerModel;

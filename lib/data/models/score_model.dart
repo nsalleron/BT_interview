@@ -25,8 +25,7 @@ class ScoreModel extends Score {
           penalties: penalties,
         );
 
-  factory ScoreModel.fromJson(Map<String, dynamic> json) =>
-      _$ScoreModelFromJson(json);
+  factory ScoreModel.fromJson(Map<String, dynamic> json) => _$ScoreModelFromJson(json);
 
   @override
   @JsonKey(fromJson: stopModelFromJson, toJson: stopModelToJson)

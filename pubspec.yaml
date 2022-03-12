@@ -58,6 +58,8 @@ dev_dependencies:
   pedantic_mono: any
   mockito: 5.0.15
   golden_toolkit: ^0.13.0
+  integration_test:
+    sdk: flutter
   flutter_test:
     sdk: flutter
   bloc_test: ^9.0.1

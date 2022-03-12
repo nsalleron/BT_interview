@@ -19,8 +19,7 @@ class WinnerModel extends Winner {
           tla: tla,
         );
 
-  factory WinnerModel.fromJson(Map<String, dynamic> json) =>
-      _$WinnerModelFromJson(json);
+  factory WinnerModel.fromJson(Map<String, dynamic> json) => _$WinnerModelFromJson(json);
 
   Map<String, dynamic> toJson() => _$WinnerModelToJson(this);
 }

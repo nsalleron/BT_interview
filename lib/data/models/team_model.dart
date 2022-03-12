@@ -45,8 +45,7 @@ class TeamModel extends Team {
           lastUpdated: lastUpdated,
         );
 
-  factory TeamModel.fromJson(Map<String, dynamic> json) =>
-      _$TeamModelFromJson(json);
+  factory TeamModel.fromJson(Map<String, dynamic> json) => _$TeamModelFromJson(json);
 
   @override
   @JsonKey(fromJson: squadFromJson, toJson: squadToJson)

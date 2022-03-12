@@ -26,42 +26,38 @@ class TeamCubit extends Cubit<TeamState> {
   GetMatchesUseCase getMatchesUseCase;
   final DateTime _now = DateTime.now();
   final DateFormat formatter = DateFormat('yyyy-MM-dd');
+  late bool isCompetitionFinished;
 
   Future<void> fetchBestTeam({required Competition competition}) async {
     emit(TeamLoading());
-    final DataState<Matches> matchDataState =
-        await _retrieveMatchesFromCompetition(competition);
+    isCompetitionFinished = _isCompetitionFinished(competition.currentSeason);
+    final DataState<Matches> matchDataState = await _retrieveMatchesFromCompetition(competition);
     matchDataState.when(_onMatchesFetched, _onMatchesFailed);
   }
 
   Future<void> _onMatchesFetched(Matches? matches) async {
-    final int? teamId = _retrieveBestTeamFromMatches(
-      matches,
-    ); // TODO(nsalleron): when success etc.
-
-    if (teamId == null) {
+    if (matches == null || matches.isEmpty) {
       return _noWinnerYet();
     }
-    final DataState<Team> teamDataState =
-        await getTeamUseCase(TeamRequestParams(teamId: teamId));
+    final int teamId = _retrieveBestTeamFromMatches(matches);
+
+    final DataState<Team> teamDataState = await getTeamUseCase(TeamRequestParams(teamId: teamId));
     teamDataState.when(_onTeamFetched, _onTeamFailed);
   }
 
-  int? _getWinner(Match e) =>
-      e.score?.winner! == 'HOME_TEAM' ? e.homeTeam.id : e.awayTeam.id;
+  int? _getWinner(Match e) => e.score?.winner! == 'HOME_TEAM' ? e.homeTeam.id : e.awayTeam.id;
 
-  int? _retrieveBestTeamFromMatches(Matches? matches) {
-    if (matches == null || matches.isEmpty) {
-      return null;
-    }
+  int _retrieveBestTeamFromMatches(Matches matches) {
+    final Matches filteredMatches = isCompetitionFinished ? matches.findLastMatchDateAndMinusThirtyDays() : matches;
+
     final Map<int, int> idToWin = {};
-    matches.map(_getWinner).whereNotNull().forEach(
+    filteredMatches.map(_getWinner).whereNotNull().forEach(
           (x) => idToWin[x] = !idToWin.containsKey(x) ? (1) : (idToWin[x]! + 1),
         );
     return idToWin
         .toList()
         .reduce(
-          (value, element) => value.second > element.second ? value : element,
+          (value, element) => value.second >= element.second ? value : element,
         )
         .first;
   }
@@ -73,18 +69,16 @@ class TeamCubit extends Cubit<TeamState> {
         )
       };
 
-  void _onTeamFetched(Team? successTeam) => successTeam != null
-      ? emit(TeamSuccess(team: successTeam))
-      : emit(const TeamFailed(errorMessage: 'Team is null'));
+  void _onTeamFetched(Team? successTeam) =>
+      successTeam != null ? emit(TeamSuccess(team: successTeam)) : emit(const TeamFailed(errorMessage: 'Team is null'));
 
-  void _onTeamFailed(DioError error) =>
-      emit(TeamFailed(errorMessage: error.message));
+  void _onTeamFailed(DioError error) => emit(TeamFailed(errorMessage: error.message));
 
   Future<DataState<Matches>> _retrieveMatchesFromCompetition(
     Competition competition,
   ) =>
       getMatchesUseCase(
-        _isCompetitionFinished(competition.currentSeason)
+        isCompetitionFinished
             ? MatchRequestParams(competitionId: competition.id)
             : MatchRequestParams(
                 competitionId: competition.id,
@@ -93,13 +87,26 @@ class TeamCubit extends Cubit<TeamState> {
               ),
       );
 
-  bool _isCompetitionFinished(CurrentSeason currentSeason) =>
-      DateTime.parse(currentSeason.endDate).isBefore(_now);
+  bool _isCompetitionFinished(CurrentSeason currentSeason) => DateTime.parse(currentSeason.endDate).isBefore(_now);
 
-  String _thirtyDaysBeforeNow() =>
-      formatter.format(_now.subtract(const Duration(days: 30)));
+  String _thirtyDaysBeforeNow() => formatter.format(_now.subtract(const Duration(days: 30)));
 
   String _dateNow() => formatter.format(_now);
 
   void _noWinnerYet() => emit(TeamNoMatchesYet());
+}
+
+extension ExtensionMatches on Matches {
+  Matches findLastMatchDateAndMinusThirtyDays() {
+    final Match lastMatch = filter((element) => element.utcDate != null).toList().cast<Match>().reduce(
+          (value, element) =>
+              DateTime.parse(value.utcDate!).isAfter(DateTime.parse(element.utcDate!)) ? value : element,
+        );
+    final DateTime beginningOfSortingByDate = DateTime.parse(lastMatch.utcDate!).subtract(const Duration(days: 30));
+
+    final Matches filteredMatches = filter((element) => DateTime.parse(element.utcDate!).isAfter(beginningOfSortingByDate))
+        .toList()
+        .cast<Match>();
+    return filteredMatches;
+  }
 }

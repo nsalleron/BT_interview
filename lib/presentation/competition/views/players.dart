@@ -36,8 +36,7 @@ class Players extends StatelessWidget {
                   if (e.dateOfBirth != null)
                     KeyTitleAndBoldValueText(
                       title: 'Player date of birth: ',
-                      value:
-                          _format.format(DateTime.parse(e.dateOfBirth ?? '')),
+                      value: _format.format(DateTime.parse(e.dateOfBirth ?? '')),
                     ),
                   KeyTitleAndBoldValueText(
                     title: 'Player country: ',

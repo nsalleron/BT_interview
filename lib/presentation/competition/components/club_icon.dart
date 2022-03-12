@@ -52,7 +52,10 @@ class _NetworkIcon extends StatelessWidget {
       width: _edgeSize,
       height: _edgeSize,
       fit: BoxFit.fitWidth,
-      placeholderBuilder: (BuildContext context) => const CircularLoading(),
+      placeholderBuilder: (BuildContext context) => const Icon(
+        Icons.report_problem,
+        size: _edgeSize,
+      ),
     );
   }
 }

@@ -11,32 +11,31 @@ import 'package:flutball/presentation/competition/logic/competition_cubit.dart';
 import 'package:flutball/presentation/competition/logic/team_cubit.dart';
 import 'package:get_it/get_it.dart';
 
-final GetIt injector = GetIt.instance
+final GetIt appInjector = GetIt.instance
   ..registerLazySingleton<Dio>(
     () => Dio()
       ..options.headers['X-Auth-Token'] = kApiKey
       ..interceptors.add(
-        DioCacheManager(CacheConfig(baseUrl: kBaseUrl)).interceptor
-            as Interceptor,
+        DioCacheManager(CacheConfig(baseUrl: kBaseUrl)).interceptor as Interceptor,
       )
       ..interceptors.add(LogInterceptor(responseBody: true)),
   )
   ..registerLazySingleton<FootballApiService>(
-    () => FootballApiService(injector()),
+    () => FootballApiService(appInjector()),
   )
   ..registerLazySingleton<FootballRepository>(
-    () => FootballRepositoryImpl(footballApiService: injector()),
+    () => FootballRepositoryImpl(footballApiService: appInjector()),
   )
   ..registerLazySingleton<GetMatchesUseCase>(
-    () => GetMatchesUseCase(injector()),
+    () => GetMatchesUseCase(appInjector()),
   )
-  ..registerLazySingleton<GetTeamUseCase>(() => GetTeamUseCase(injector()))
+  ..registerLazySingleton<GetTeamUseCase>(() => GetTeamUseCase(appInjector()))
   ..registerLazySingleton<GetCompetitionUseCase>(
-    () => GetCompetitionUseCase(injector()),
+    () => GetCompetitionUseCase(appInjector()),
   )
   ..registerLazySingleton<CompetitionCubit>(
-    () => CompetitionCubit(getCompetitionUseCase: injector()),
+    () => CompetitionCubit(getCompetitionUseCase: appInjector()),
   )
   ..registerLazySingleton(
-    () => TeamCubit(getTeamUseCase: injector(), getMatchesUseCase: injector()),
+    () => TeamCubit(getTeamUseCase: appInjector(), getMatchesUseCase: appInjector()),
   );

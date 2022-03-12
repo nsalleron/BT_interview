@@ -42,3 +42,6 @@ linter:
     avoid_void_async: true
     unawaited_futures: true
     cast_nullable_to_non_nullable: true
+    lines_longer_than_80_chars: false
+    sort_pub_dependencies: false
+    depend_on_referenced_packages: false

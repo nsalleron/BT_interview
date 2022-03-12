@@ -1,5 +1,4 @@
 import 'package:flutball/domain/entities/referees.dart';
-
 import 'package:json_annotation/json_annotation.dart';
 
 part 'referees_model.g.dart';
@@ -18,8 +17,7 @@ class RefereesModel extends Referees {
           nationality: nationality,
         );
 
-  factory RefereesModel.fromJson(Map<String, dynamic> json) =>
-      _$RefereesModelFromJson(json);
+  factory RefereesModel.fromJson(Map<String, dynamic> json) => _$RefereesModelFromJson(json);
 
   Map<String, dynamic> toJson() => _$RefereesModelToJson(this);
 }

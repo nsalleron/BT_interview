@@ -8,6 +8,7 @@ import 'package:flutball/presentation/competition/views/competition_header.dart'
 import 'package:flutball/presentation/competition/views/players.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class CompetitionPage extends StatefulWidget {
@@ -21,27 +22,30 @@ class _CompetitionPageState extends State<CompetitionPage> {
   int initialPage = 0;
 
   @override
-  Widget build(BuildContext teamPageContext) =>
-      BlocConsumer<CompetitionCubit, CompetitionState>(
-        listener: (BuildContext context, CompetitionState state) {
-          if (state is CompetitionSuccess && state.competitions.isNotEmpty) {
-            context
-                .read<TeamCubit>()
-                .fetchBestTeam(competition: state.competitions.first);
-          }
-        },
-        builder: (BuildContext context, CompetitionState competitionState) {
-          final List<Widget> competitions =
-              computeCompetition(competitionState);
-
-          return PageView.builder(
-            itemCount: competitions.length,
-            onPageChanged: (page) => fetchTeam(competitionState, page),
-            itemBuilder: (BuildContext context, int index) {
-              return competitions[index];
-            },
-          );
-        },
+  Widget build(BuildContext teamPageContext) => Scaffold(
+        appBar: AppBar(
+          title: Text(AppLocalizations.of(context)?.competition_title ?? ''),
+        ),
+        body: BlocConsumer<CompetitionCubit, CompetitionState>(
+          listener: (BuildContext context, CompetitionState state) {
+            if (state is CompetitionSuccess && state.competitions.isNotEmpty) {
+              context.read<TeamCubit>().fetchBestTeam(competition: state.competitions.first);
+            }
+          },
+          builder: (BuildContext context, CompetitionState competitionState) {
+            if (competitionState is CompetitionFailure) {
+              return const _FailedCompetitionState();
+            }
+            final List<Widget> competitions = computeCompetition(competitionState);
+            return PageView.builder(
+              itemCount: competitions.length,
+              onPageChanged: (page) => fetchTeam(competitionState, page),
+              itemBuilder: (BuildContext context, int index) {
+                return competitions[index];
+              },
+            );
+          },
+        ),
       );
 
   void fetchTeam(
@@ -58,11 +62,28 @@ class _CompetitionPageState extends State<CompetitionPage> {
     return competitionState is CompetitionSuccess
         ? competitionState.competitions
             .map(
-              (currentCompetition) =>
-                  _Competition(currentCompetition: currentCompetition),
+              (currentCompetition) => _Competition(currentCompetition: currentCompetition),
             )
             .toList(growable: false)
         : [];
+  }
+}
+
+class _FailedCompetitionState extends StatelessWidget {
+  const _FailedCompetitionState({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return RefreshIndicator(
+      onRefresh: () => context.read<CompetitionCubit>().fetchCompetitions(),
+      child: SingleChildScrollView(
+        physics: const AlwaysScrollableScrollPhysics(),
+        child: SvgPicture.asset(
+          'assets/svg/failed.svg',
+          fit: BoxFit.fitHeight,
+        ),
+      ),
+    );
   }
 }
 
@@ -143,9 +164,7 @@ class _TeamPageFailed extends StatelessWidget {
               bottom: 0,
             ),
             child: RefreshIndicator(
-              onRefresh: () => context
-                  .read<TeamCubit>()
-                  .fetchBestTeam(competition: competition),
+              onRefresh: () => context.read<TeamCubit>().fetchBestTeam(competition: competition),
               child: SingleChildScrollView(
                 physics: const AlwaysScrollableScrollPhysics(),
                 child: SvgPicture.asset(

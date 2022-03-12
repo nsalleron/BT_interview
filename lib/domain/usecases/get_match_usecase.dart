@@ -5,8 +5,7 @@ import 'package:flutball/domain/entities/helpers/types_helper.dart';
 import 'package:flutball/domain/entities/match.dart';
 import 'package:flutball/domain/usecases/usecase.dart';
 
-class GetMatchesUseCase
-    implements UseCase<DataState<List<Match>>, MatchRequestParams> {
+class GetMatchesUseCase implements UseCase<DataState<List<Match>>, MatchRequestParams> {
   GetMatchesUseCase(this._footballRepository);
 
   final FootballRepository _footballRepository;

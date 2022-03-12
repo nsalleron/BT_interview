@@ -16,8 +16,7 @@ class CompetitionCubit extends Cubit<CompetitionState> {
 
   Future<void> fetchCompetitions({CompetitionsRequestParams? params}) async {
     emit(CompetitionLoading());
-    final DataState<Competitions?> matchDataState =
-        await _getCompetitionUseCase(
+    final DataState<Competitions?> matchDataState = await _getCompetitionUseCase(
       params ?? const CompetitionsRequestParams(),
     );
     matchDataState.when(

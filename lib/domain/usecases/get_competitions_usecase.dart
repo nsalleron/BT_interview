@@ -4,8 +4,7 @@ import 'package:flutball/data/repositories/football_repository.dart';
 import 'package:flutball/domain/entities/helpers/types_helper.dart';
 import 'package:flutball/domain/usecases/usecase.dart';
 
-class GetCompetitionUseCase
-    implements UseCase<DataState<Competitions?>, CompetitionsRequestParams> {
+class GetCompetitionUseCase implements UseCase<DataState<Competitions?>, CompetitionsRequestParams> {
   GetCompetitionUseCase(this._footballRepository);
 
   final FootballRepository _footballRepository;

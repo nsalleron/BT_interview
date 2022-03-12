@@ -30,16 +30,12 @@ class GlobalHeaderInformation extends StatelessWidget {
               value: comp.area?.name,
             ),
             KeyTitleAndBoldValueText(
-              title: 'League\'s start date: ',
+              title: 'start date: ',
               value: comp.currentSeason.startDate,
             ),
             KeyTitleAndBoldValueText(
-              title: 'League\'s end date: ',
+              title: 'end date: ',
               value: comp.currentSeason.endDate,
-            ),
-            KeyTitleAndBoldValueText(
-              title: 'Winner: ',
-              value: comp.currentSeason.winner?.name ?? 'No winner yet!',
             ),
             KeyTitleAndBoldValueText(
               title: 'Last update: ',

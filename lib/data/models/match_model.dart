@@ -25,22 +25,21 @@ class MatchModel extends Match {
     required this.awayTeam,
     this.referees,
   }) : super(
-    id: id,
-    season: season,
-    utcDate: utcDate,
-    status: status,
-    matchday: matchday,
-    stage: stage,
-    lastUpdated: lastUpdated,
-    odds: odds,
-    score: score,
-    homeTeam: homeTeam,
-    awayTeam: awayTeam,
-    referees: referees,
-  );
+          id: id,
+          season: season,
+          utcDate: utcDate,
+          status: status,
+          matchday: matchday,
+          stage: stage,
+          lastUpdated: lastUpdated,
+          odds: odds,
+          score: score,
+          homeTeam: homeTeam,
+          awayTeam: awayTeam,
+          referees: referees,
+        );
 
-  factory MatchModel.fromJson(Map<String, dynamic> json) =>
-      _$MatchModelFromJson(json);
+  factory MatchModel.fromJson(Map<String, dynamic> json) => _$MatchModelFromJson(json);
 
   @override
   @JsonKey(fromJson: seasonModelFromJson, toJson: seasonModelToJson)

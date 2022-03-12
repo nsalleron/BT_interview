@@ -6,11 +6,13 @@ Match matchFixture({
   String withLastUpdated = 'aLastUpdated',
   LocalTeam withHomeTeam = const LocalTeam(id: 0, name: 'aHomeTeamName'),
   LocalTeam withAwayTeam = const LocalTeam(id: 1, name: 'aAwayTeam'),
+  String? withUtcDate,
 }) {
   return Match(
     id: withId,
     lastUpdated: withLastUpdated,
     homeTeam: withHomeTeam,
     awayTeam: withAwayTeam,
+    utcDate: withUtcDate ?? DateTime.now().toIso8601String(), //DO NOT DO THAT NORMALLY
   );
 }

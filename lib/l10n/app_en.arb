@@ -1,5 +1,6 @@
 {
-    "competition_title": "League's name: ",
-    "competition_country": "League's country: ",
+    "app_title": "Flutball",
+    "competition_title": "name: ",
+    "competition_country": "country: ",
     "tech_dataFailure": "Data seem's to be corrumpt!"
 }

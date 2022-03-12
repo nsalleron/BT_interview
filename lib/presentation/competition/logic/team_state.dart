@@ -26,7 +26,6 @@ class TeamSuccess extends TeamState {
 }
 
 class TeamFailed extends TeamState {
-
   const TeamFailed({
     required this.errorMessage,
   });

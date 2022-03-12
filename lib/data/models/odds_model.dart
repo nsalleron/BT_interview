@@ -7,8 +7,7 @@ part 'odds_model.g.dart';
 class OddsModel extends Odds {
   const OddsModel({String? msg}) : super(msg: msg);
 
-  factory OddsModel.fromJson(Map<String, dynamic> json) =>
-      _$OddsModelFromJson(json);
+  factory OddsModel.fromJson(Map<String, dynamic> json) => _$OddsModelFromJson(json);
 
   Map<String, dynamic> toJson() => _$OddsModelToJson(this);
 }

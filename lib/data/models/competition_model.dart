@@ -30,8 +30,7 @@ class CompetitionModel extends Competition {
           lastUpdated: lastUpdated,
         );
 
-  factory CompetitionModel.fromJson(Map<String, dynamic> json) =>
-      _$CompetitionModelFromJson(json);
+  factory CompetitionModel.fromJson(Map<String, dynamic> json) => _$CompetitionModelFromJson(json);
 
   @override
   @JsonKey(fromJson: areaFromJson, toJson: areaToJson)
