@@ -25,6 +25,17 @@ jobs:
       with:
         flutter-version: '2.10.3'
     - run: flutter pub get
-    - run: flutter test
-    - run: flutter build apk
-    - run: flutter build appbundle
+    - name: Run tests
+      run: flutter test --coverage
+    - name: Install lcov
+      run: sudo apt-get install -y lcov
+    - name: Remove generated files from code coverage report and entities / models /!\
+      run: lcov --remove coverage/lcov.info 'lib/**.gr.dart' 'lib/**.g.dart' 'lib/**.g.dart' 'lib/**/**/**/*.g.dart' 'lib/data/models/*' 'lib/domain/entities/*' -o coverage/lcov.info
+    - name: Upload coverage to Codecov
+      uses: codecov/codecov-actions@v1.2.1
+      with:
+        file: coverage/lcov.info
+    - name: Build APK
+      run: flutter build apk
+    - name: Build AppBundle
+      run: flutter build appbundle
