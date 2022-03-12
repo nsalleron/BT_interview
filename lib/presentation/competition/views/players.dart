@@ -33,10 +33,12 @@ class Players extends StatelessWidget {
                     title: 'Player position: ',
                     value: e.position,
                   ),
-                  KeyTitleAndBoldValueText(
-                    title: 'Player date of birth: ',
-                    value: _format.format(DateTime.parse(e.dateOfBirth ?? '')),
-                  ),
+                  if (e.dateOfBirth != null)
+                    KeyTitleAndBoldValueText(
+                      title: 'Player date of birth: ',
+                      value:
+                          _format.format(DateTime.parse(e.dateOfBirth ?? '')),
+                    ),
                   KeyTitleAndBoldValueText(
                     title: 'Player country: ',
                     value: e.countryOfBirth,

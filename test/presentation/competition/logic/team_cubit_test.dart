@@ -46,13 +46,13 @@ void main() {
     blocTest<TeamCubit, TeamState>(
       'emits [$TeamLoading, $TeamSuccess] when fetchCompetition is success',
       setUp: () {
-        matchRequestParams = MatchRequestParams(
+        matchRequestParams = const MatchRequestParams(
           competitionId: 1,
           dateFrom: null,
           dateTo: null,
           status: 'FINISHED',
         );
-        teamRequestParams = TeamRequestParams(teamId: 1);
+        teamRequestParams = const TeamRequestParams(teamId: 1);
       },
       build: () {
         when(mockGetMatchesUseCase(matchRequestParams))
@@ -73,13 +73,13 @@ void main() {
     blocTest<TeamCubit, TeamState>(
       'emits [$TeamLoading, $TeamFailed] when fetchCompetition is success',
       setUp: () {
-        matchRequestParams = MatchRequestParams(
+        matchRequestParams = const MatchRequestParams(
           competitionId: 1,
           dateFrom: null,
           dateTo: null,
           status: 'FINISHED',
         );
-        teamRequestParams = TeamRequestParams(teamId: 1);
+        teamRequestParams = const TeamRequestParams(teamId: 1);
       },
       build: () {
         when(mockGetMatchesUseCase(matchRequestParams))

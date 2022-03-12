@@ -60,7 +60,7 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
           BlocProvider<TeamCubit>(create: (_) => injector()),
         ],
-        child: const TeamPage(),
+        child: const CompetitionPage(),
       ),
     );
   }

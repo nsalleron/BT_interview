@@ -10,72 +10,101 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-class TeamPage extends StatefulWidget {
-  const TeamPage({Key? key}) : super(key: key);
+class CompetitionPage extends StatefulWidget {
+  const CompetitionPage({Key? key}) : super(key: key);
 
   @override
-  _TeamPageState createState() => _TeamPageState();
+  _CompetitionPageState createState() => _CompetitionPageState();
 }
 
-class _TeamPageState extends State<TeamPage> {
-  @override
-  Widget build(BuildContext teamPageContext) {
-    final List<Widget> widgets = <Widget>[];
-    return BlocConsumer<CompetitionCubit, CompetitionState>(
-      listener: (BuildContext context, CompetitionState state) {
-        if (state is CompetitionSuccess && state.competitions.isNotEmpty) {
-          context
-              .read<TeamCubit>()
-              .fetchBestTeam(competition: state.competitions.first);
-        }
-      },
-      builder: (BuildContext context, CompetitionState competitionState) {
-        final PageController pageController = PageController(initialPage: 0);
+class _CompetitionPageState extends State<CompetitionPage> {
+  int initialPage = 0;
 
-        if (competitionState is CompetitionSuccess) {
-          widgets.addAll(
-            competitionState.competitions.map(
-              (currentCompetition) => SingleChildScrollView(
-                child: Column(
-                  mainAxisSize: MainAxisSize.max,
-                  children: [
-                    CompetitionHeader(comp: currentCompetition),
-                    BlocBuilder<TeamCubit, TeamState>(
-                      builder: (buildContext, state) {
-                        if (state is TeamLoading) {
-                          return const _TeamLoadingPage();
-                        }
-                        if (state is TeamSuccess) {
-                          return _TeamSuccessPage(team: state.team);
-                        }
-                        if (state is TeamFailed) {
-                          return _TeamPageFailed(
-                            competition: currentCompetition,
-                            errorMessage: state.errorMessage,
-                          );
-                        }
-                        if (state is TeamNoMatchesYet) {
-                          return const _TeamNoMatchesYet();
-                        }
-                        return const SizedBox.shrink();
-                      },
-                    )
-                  ],
-                ),
-              ),
-            ),
+  @override
+  Widget build(BuildContext teamPageContext) =>
+      BlocConsumer<CompetitionCubit, CompetitionState>(
+        listener: (BuildContext context, CompetitionState state) {
+          if (state is CompetitionSuccess && state.competitions.isNotEmpty) {
+            context
+                .read<TeamCubit>()
+                .fetchBestTeam(competition: state.competitions.first);
+          }
+        },
+        builder: (BuildContext context, CompetitionState competitionState) {
+          final List<Widget> competitions =
+              computeCompetition(competitionState);
+
+          return PageView.builder(
+            itemCount: competitions.length,
+            onPageChanged: (page) => fetchTeam(competitionState, page),
+            itemBuilder: (BuildContext context, int index) {
+              return competitions[index];
+            },
           );
-        }
-        return PageView(
-          controller: pageController,
-          children: [...widgets],
-          onPageChanged: (page) => competitionState is CompetitionSuccess
-              ? context.read<TeamCubit>().fetchBestTeam(
-                    competition: competitionState.competitions[page],
-                  )
-              : null,
-        );
-      },
+        },
+      );
+
+  void fetchTeam(
+    CompetitionState competitionState,
+    int page,
+  ) =>
+      competitionState is CompetitionSuccess
+          ? context.read<TeamCubit>().fetchBestTeam(
+                competition: competitionState.competitions[page],
+              )
+          : null;
+
+  List<Widget> computeCompetition(CompetitionState competitionState) {
+    return competitionState is CompetitionSuccess
+        ? competitionState.competitions
+            .map(
+              (currentCompetition) =>
+                  _Competition(currentCompetition: currentCompetition),
+            )
+            .toList(growable: false)
+        : [];
+  }
+}
+
+class _Competition extends StatelessWidget {
+  const _Competition({
+    Key? key,
+    required this.currentCompetition,
+  }) : super(key: key);
+  final Competition currentCompetition;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 16),
+      child: SingleChildScrollView(
+        child: Column(
+          mainAxisSize: MainAxisSize.max,
+          children: [
+            CompetitionHeader(comp: currentCompetition),
+            BlocBuilder<TeamCubit, TeamState>(
+              builder: (buildContext, state) {
+                if (state is TeamLoading) {
+                  return const _TeamLoadingPage();
+                }
+                if (state is TeamSuccess) {
+                  return _TeamSuccessPage(team: state.team);
+                }
+                if (state is TeamFailed) {
+                  return _TeamPageFailed(
+                    competition: currentCompetition,
+                    errorMessage: state.errorMessage,
+                  );
+                }
+                if (state is TeamNoMatchesYet) {
+                  return const _TeamNoMatchesYet();
+                }
+                return const SizedBox.shrink();
+              },
+            )
+          ],
+        ),
+      ),
     );
   }
 }
@@ -107,8 +136,12 @@ class _TeamPageFailed extends StatelessWidget {
             ),
           ),
           Padding(
-            padding:
-                const EdgeInsets.only(top: 16, left: 16, right: 16, bottom: 0),
+            padding: const EdgeInsets.only(
+              top: 16,
+              left: 16,
+              right: 16,
+              bottom: 0,
+            ),
             child: RefreshIndicator(
               onRefresh: () => context
                   .read<TeamCubit>()

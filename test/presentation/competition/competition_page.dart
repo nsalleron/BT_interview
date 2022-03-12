@@ -43,8 +43,8 @@ void main() {
   });
 
   screenTestGolden(
-    screenName: '$TeamPage',
-    tag: '$TeamPage',
+    screenName: '$CompetitionPage',
+    tag: '$CompetitionPage',
     showSemanticsDebugger: true,
     builder: () => MultiBlocProvider(
       providers: [
@@ -60,7 +60,7 @@ void main() {
           ),
         ),
       ],
-      child: const TeamPage(),
+      child: const CompetitionPage(),
     ),
   );
 }
