@@ -44,7 +44,7 @@ void main() {
     });
 
     blocTest<TeamCubit, TeamState>(
-      'emits [$TeamLoading, $TeamSuccess] when fetchCompetition is success',
+      'emits [$TeamLoading, $TeamSuccess] when fetchBestTeam is success',
       setUp: () {
         matchRequestParams = const MatchRequestParams(
           competitionId: 1,
@@ -71,7 +71,7 @@ void main() {
     );
 
     blocTest<TeamCubit, TeamState>(
-      'emits [$TeamLoading, $TeamFailed] when fetchCompetition is success',
+      'emits [$TeamLoading, $TeamFailed] when fetchBestTeam is failure',
       setUp: () {
         matchRequestParams = const MatchRequestParams(
           competitionId: 1,
@@ -101,5 +101,38 @@ void main() {
         verify(mockGetMatchesUseCase.call(matchRequestParams)).called(1);
       },
     );
+
+    blocTest<TeamCubit, TeamState>(
+      'emits [$TeamLoading, $TeamFailed] when fetchBestTeam is failure',
+      setUp: () {
+        matchRequestParams = const MatchRequestParams(
+          competitionId: 1,
+          dateFrom: null,
+          dateTo: null,
+          status: 'FINISHED',
+        );
+        teamRequestParams = const TeamRequestParams(teamId: 1);
+      },
+      build: () {
+        when(mockGetMatchesUseCase(matchRequestParams))
+            .thenAnswer((_) async => DataSuccess<Matches>([matchFixture()]));
+
+        when(mockGetTeamUseCase(teamRequestParams)).thenAnswer(
+              (_) async => DataFailed(
+            DioError(
+              requestOptions: RequestOptions(path: kBaseUrl),
+            ),
+          ),
+        );
+
+        return retrieveNewCubit(mockGetMatchesUseCase, mockGetTeamUseCase);
+      },
+      act: (cubit) => cubit.fetchBestTeam(competition: competitionFixture()),
+      expect: () => [isA<TeamLoading>(), isA<TeamFailed>()],
+      verify: (cubit) {
+        verify(mockGetMatchesUseCase.call(matchRequestParams)).called(1);
+      },
+    );
+
   });
 }

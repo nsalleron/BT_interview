@@ -34,21 +34,6 @@ class TeamCubit extends Cubit<TeamState> {
     matchDataState.when(_onMatchesFetched, _onMatchesFailed);
   }
 
-  String _dateNow() => formatter.format(_now);
-
-  int? _getWinner(Match e) =>
-      e.score?.winner! == 'HOME_TEAM' ? e.homeTeam.id : e.awayTeam.id;
-
-  bool _isCompetitionFinished(CurrentSeason currentSeason) =>
-      DateTime.parse(currentSeason.endDate).isBefore(_now);
-
-  void _onMatchesFailed(DioError error) => {
-        emit(
-          // ignore: avoid_dynamic_calls
-          TeamFailed(errorMessage: error.response?.data['message'] as String),
-        )
-      };
-
   Future<void> _onMatchesFetched(Matches? matches) async {
     final int? teamId = _retrieveBestTeamFromMatches(
       matches,
@@ -62,12 +47,8 @@ class TeamCubit extends Cubit<TeamState> {
     teamDataState.when(_onTeamFetched, _onTeamFailed);
   }
 
-  void _onTeamFailed(DioError error) =>
-      emit(TeamFailed(errorMessage: error.message));
-
-  void _onTeamFetched(Team? successTeam) => successTeam != null
-      ? emit(TeamSuccess(team: successTeam))
-      : emit(const TeamFailed(errorMessage: 'Team is null'));
+  int? _getWinner(Match e) =>
+      e.score?.winner! == 'HOME_TEAM' ? e.homeTeam.id : e.awayTeam.id;
 
   int? _retrieveBestTeamFromMatches(Matches? matches) {
     if (matches == null || matches.isEmpty) {
@@ -85,6 +66,20 @@ class TeamCubit extends Cubit<TeamState> {
         .first;
   }
 
+  void _onMatchesFailed(DioError error) => {
+        emit(
+          // ignore: avoid_dynamic_calls
+          TeamFailed(errorMessage: error.response?.data['message'] as String),
+        )
+      };
+
+  void _onTeamFetched(Team? successTeam) => successTeam != null
+      ? emit(TeamSuccess(team: successTeam))
+      : emit(const TeamFailed(errorMessage: 'Team is null'));
+
+  void _onTeamFailed(DioError error) =>
+      emit(TeamFailed(errorMessage: error.message));
+
   Future<DataState<Matches>> _retrieveMatchesFromCompetition(
     Competition competition,
   ) =>
@@ -98,8 +93,13 @@ class TeamCubit extends Cubit<TeamState> {
               ),
       );
 
+  bool _isCompetitionFinished(CurrentSeason currentSeason) =>
+      DateTime.parse(currentSeason.endDate).isBefore(_now);
+
   String _thirtyDaysBeforeNow() =>
       formatter.format(_now.subtract(const Duration(days: 30)));
+
+  String _dateNow() => formatter.format(_now);
 
   void _noWinnerYet() => emit(TeamNoMatchesYet());
 }
