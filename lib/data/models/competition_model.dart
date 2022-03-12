@@ -8,16 +8,7 @@ part 'competition_model.g.dart';
 
 @JsonSerializable()
 class CompetitionModel extends Competition {
-
-  @override
-  @JsonKey(fromJson: areaFromJson, toJson: areaToJson)
-  final AreaModel? area;
-
-  @override
-  @JsonKey(fromJson: currentSeasonFromJson, toJson: currentSeasonToJson)
-  final CurrentSeasonModel currentSeason;
-
-  CompetitionModel({
+  const CompetitionModel({
     required int id,
     this.area,
     required String name,
@@ -28,20 +19,29 @@ class CompetitionModel extends Competition {
     required int numberOfAvailableSeasons,
     required String lastUpdated,
   }) : super(
-            id: id,
-            area: area,
-            name: name,
-            code: code,
-            emblemUrl: emblemUrl,
-            plan: plan,
-            currentSeason: currentSeason,
-            numberOfAvailableSeasons: numberOfAvailableSeasons,
-            lastUpdated: lastUpdated);
+          id: id,
+          area: area,
+          name: name,
+          code: code,
+          emblemUrl: emblemUrl,
+          plan: plan,
+          currentSeason: currentSeason,
+          numberOfAvailableSeasons: numberOfAvailableSeasons,
+          lastUpdated: lastUpdated,
+        );
 
-  factory CompetitionModel.fromJson(Map<String, dynamic> json) => _$CompetitionModelFromJson(json);
+  factory CompetitionModel.fromJson(Map<String, dynamic> json) =>
+      _$CompetitionModelFromJson(json);
+
+  @override
+  @JsonKey(fromJson: areaFromJson, toJson: areaToJson)
+  // ignore: overridden_fields
+  final AreaModel? area;
+
+  @override
+  @JsonKey(fromJson: currentSeasonFromJson, toJson: currentSeasonToJson)
+  // ignore: overridden_fields
+  final CurrentSeasonModel currentSeason;
 
   Map<String, dynamic> toJson() => _$CompetitionModelToJson(this);
-
 }
-
-

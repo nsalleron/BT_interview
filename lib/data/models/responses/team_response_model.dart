@@ -6,14 +6,15 @@ part 'team_response_model.g.dart';
 
 @JsonSerializable()
 class TeamResponseModel {
-  @JsonKey(toJson: teamModelToJson)
-  final TeamModel team;
-
   TeamResponseModel({
     required this.team,
   });
 
-  factory TeamResponseModel.fromJson(Map<String, dynamic> json) => TeamResponseModel(team: TeamModel.fromJson(json));
+  factory TeamResponseModel.fromJson(Map<String, dynamic> json) =>
+      TeamResponseModel(team: TeamModel.fromJson(json));
+
+  @JsonKey(toJson: teamModelToJson)
+  final TeamModel team;
 
   Map<String, dynamic> toJson() => _$TeamResponseModelToJson(this);
 }

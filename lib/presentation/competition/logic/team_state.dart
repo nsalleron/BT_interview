@@ -15,27 +15,29 @@ class TeamLoading extends TeamState {
 }
 
 class TeamSuccess extends TeamState {
-  final Team team;
-
   const TeamSuccess({
     required this.team,
   });
+
+  final Team team;
 
   @override
   List<Object> get props => [team];
 }
 
 class TeamFailed extends TeamState {
-  final String errorMessage;
 
   const TeamFailed({
     required this.errorMessage,
   });
+
+  final String errorMessage;
 
   @override
   List<Object> get props => [errorMessage];
 }
 
 class TeamNoMatchesYet extends TeamState {
+  @override
   List<Object?> get props => [];
 }

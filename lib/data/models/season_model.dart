@@ -17,7 +17,8 @@ class SeasonModel extends Season {
           currentMatchday: currentMatchday,
         );
 
+  factory SeasonModel.fromJson(Map<String, dynamic> json) =>
+      _$SeasonModelFromJson(json);
 
-  factory SeasonModel.fromJson(Map<String, dynamic> json) => _$SeasonModelFromJson(json);
   Map<String, dynamic> toJson() => _$SeasonModelToJson(this);
 }

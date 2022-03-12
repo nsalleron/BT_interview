@@ -11,12 +11,12 @@ class MatchResponseModel {
     required this.matches,
   });
 
+  factory MatchResponseModel.fromJson(Map<String, dynamic> json) =>
+      _$MatchResponseModelFromJson(json);
   final int count;
 
   @JsonKey(fromJson: matchesFromJson, toJson: matchesToJson)
   final MatchesModel matches;
-
-  factory MatchResponseModel.fromJson(Map<String, dynamic> json) => _$MatchResponseModelFromJson(json);
 
   Map<String, dynamic> toJson() => _$MatchResponseModelToJson(this);
 }

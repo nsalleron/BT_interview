@@ -26,6 +26,10 @@ analyzer:
     - test/**/**/**/*_mocks.mocks.dart
     - lib/**.gr.dart
     - lib/**.g.dart
+    - test/data/repositories/**.mocks.dart
+    - test/domain/usecases/**.mocks.dart
+    - test/presentation/competition/logic/**.mocks.dart
+    - test/presentation/competition/**.mocks.dart
 linter:
   rules:
     omit_local_variable_types: false

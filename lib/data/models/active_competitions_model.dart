@@ -7,11 +7,6 @@ part 'active_competitions_model.g.dart';
 
 @JsonSerializable()
 class ActiveCompetitionsModel extends ActiveCompetitions {
-
-  @override
-  @JsonKey(fromJson: areaFromJson, toJson: areaToJson)
-  final AreaModel? area;
-
   const ActiveCompetitionsModel({
     int? id,
     this.area,
@@ -20,17 +15,21 @@ class ActiveCompetitionsModel extends ActiveCompetitions {
     String? plan,
     String? lastUpdated,
   }) : super(
-    id: id,
-    area: area,
-    name: name,
-    code: code,
-    plan: plan,
-    lastUpdated: lastUpdated,
-  );
+          id: id,
+          area: area,
+          name: name,
+          code: code,
+          plan: plan,
+          lastUpdated: lastUpdated,
+        );
 
+  factory ActiveCompetitionsModel.fromJson(Map<String, dynamic> json) =>
+      _$ActiveCompetitionsModelFromJson(json);
 
-  factory ActiveCompetitionsModel.fromJson(Map<String, dynamic> json) => _$ActiveCompetitionsModelFromJson(json);
+  @override
+  @JsonKey(fromJson: areaFromJson, toJson: areaToJson)
+  // ignore: overridden_fields
+  final AreaModel? area;
 
   Map<String, dynamic> toJson() => _$ActiveCompetitionsModelToJson(this);
 }
-

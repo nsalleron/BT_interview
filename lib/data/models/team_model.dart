@@ -9,16 +9,6 @@ part 'team_model.g.dart';
 
 @JsonSerializable()
 class TeamModel extends Team {
-  @override
-  @JsonKey(fromJson: squadFromJson, toJson: squadToJson)
-  final List<SquadModel>? squad;
-  @override
-  @JsonKey(fromJson: areaFromJson, toJson: areaToJson)
-  final AreaModel? area;
-  @override
-  @JsonKey(fromJson: activeCompetitionsFromJson, toJson: activeCompetitionsToJson)
-  final List<ActiveCompetitionsModel>? activeCompetitions;
-
   const TeamModel({
     int? id,
     this.area,
@@ -55,8 +45,24 @@ class TeamModel extends Team {
           lastUpdated: lastUpdated,
         );
 
-  factory TeamModel.fromJson(Map<String, dynamic> json) => _$TeamModelFromJson(json);
+  factory TeamModel.fromJson(Map<String, dynamic> json) =>
+      _$TeamModelFromJson(json);
+
+  @override
+  @JsonKey(fromJson: squadFromJson, toJson: squadToJson)
+  // ignore: overridden_fields
+  final List<SquadModel>? squad;
+  @override
+  @JsonKey(fromJson: areaFromJson, toJson: areaToJson)
+  // ignore: overridden_fields
+  final AreaModel? area;
+  @override
+  @JsonKey(
+    fromJson: activeCompetitionsFromJson,
+    toJson: activeCompetitionsToJson,
+  )
+  // ignore: overridden_fields
+  final List<ActiveCompetitionsModel>? activeCompetitions;
 
   Map<String, dynamic> toJson() => _$TeamModelToJson(this);
 }
-

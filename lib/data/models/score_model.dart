@@ -9,20 +9,7 @@ part 'score_model.g.dart';
 
 @JsonSerializable()
 class ScoreModel extends Score {
-  @override
-  @JsonKey(fromJson: stopModelFromJson, toJson: stopModelToJson)
-  final StopTimeModel? fullTime;
-  @override
-  @JsonKey(fromJson: stopModelFromJson, toJson: stopModelToJson)
-  final StopTimeModel? halfTime;
-  @override
-  @JsonKey(fromJson: stopModelFromJson, toJson: stopModelToJson)
-  final StopTimeModel? extraTime;
-  @override
-  @JsonKey(fromJson: stopModelFromJson, toJson: stopModelToJson)
-  final StopTimeModel? penalties;
-
-  ScoreModel({
+  const ScoreModel({
     String? winner,
     String? duration,
     this.fullTime,
@@ -38,8 +25,25 @@ class ScoreModel extends Score {
           penalties: penalties,
         );
 
-  factory ScoreModel.fromJson(Map<String, dynamic> json) => _$ScoreModelFromJson(json);
+  factory ScoreModel.fromJson(Map<String, dynamic> json) =>
+      _$ScoreModelFromJson(json);
+
+  @override
+  @JsonKey(fromJson: stopModelFromJson, toJson: stopModelToJson)
+  // ignore: overridden_fields
+  final StopTimeModel? fullTime;
+  @override
+  @JsonKey(fromJson: stopModelFromJson, toJson: stopModelToJson)
+  // ignore: overridden_fields
+  final StopTimeModel? halfTime;
+  @override
+  @JsonKey(fromJson: stopModelFromJson, toJson: stopModelToJson)
+  // ignore: overridden_fields
+  final StopTimeModel? extraTime;
+  @override
+  @JsonKey(fromJson: stopModelFromJson, toJson: stopModelToJson)
+  // ignore: overridden_fields
+  final StopTimeModel? penalties;
 
   Map<String, dynamic> toJson() => _$ScoreModelToJson(this);
 }
-

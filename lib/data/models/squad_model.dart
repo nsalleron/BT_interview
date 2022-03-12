@@ -25,7 +25,8 @@ class SquadModel extends Squad {
           role: role,
         );
 
-  factory SquadModel.fromJson(Map<String, dynamic> json) => _$SquadModelFromJson(json);
+  factory SquadModel.fromJson(Map<String, dynamic> json) =>
+      _$SquadModelFromJson(json);
 
   Map<String, dynamic> toJson() => _$SquadModelToJson(this);
 }

@@ -10,6 +10,7 @@ abstract class FootballRepository {
 
   Future<DataState<Team>> getTeams(TeamRequestParams params);
 
-  Future<DataState<Competitions?>> getCompetitions(CompetitionsRequestParams params);
-
+  Future<DataState<Competitions?>> getCompetitions(
+    CompetitionsRequestParams params,
+  );
 }

@@ -19,7 +19,7 @@ class DataFailed<T> extends DataState<T> {
 extension DataStateExtension<T> on DataState<T> {
   S when<S>(OnSuccess<T, S> onSuccess, OnError<S> onError) {
     if (data != null) {
-      return onSuccess(data!);
+      return onSuccess(data);
     } else if (error != null) {
       return onError(error!);
     } //should not happen
@@ -27,5 +27,5 @@ extension DataStateExtension<T> on DataState<T> {
   }
 }
 
-typedef OnSuccess<T, S> = S Function(T);
+typedef OnSuccess<T, S> = S Function(T?);
 typedef OnError<S> = S Function(DioError);

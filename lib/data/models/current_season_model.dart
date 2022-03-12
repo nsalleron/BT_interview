@@ -7,11 +7,7 @@ part 'current_season_model.g.dart';
 
 @JsonSerializable()
 class CurrentSeasonModel extends CurrentSeason {
-
-  @JsonKey(fromJson: winnerFromJson, toJson: winnerToJson)
-  final WinnerModel? winnerModel;
-
-  CurrentSeasonModel({
+  const CurrentSeasonModel({
     required int id,
     required String startDate,
     required String endDate,
@@ -25,7 +21,11 @@ class CurrentSeasonModel extends CurrentSeason {
           winner: winnerModel,
         );
 
-  factory CurrentSeasonModel.fromJson(Map<String, dynamic> json) => _$CurrentSeasonModelFromJson(json);
+  factory CurrentSeasonModel.fromJson(Map<String, dynamic> json) =>
+      _$CurrentSeasonModelFromJson(json);
+
+  @JsonKey(fromJson: winnerFromJson, toJson: winnerToJson)
+  final WinnerModel? winnerModel;
 
   Map<String, dynamic> toJson() => _$CurrentSeasonModelToJson(this);
 }

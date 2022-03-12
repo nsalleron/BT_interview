@@ -5,7 +5,7 @@ part 'winner_model.g.dart';
 
 @JsonSerializable()
 class WinnerModel extends Winner {
-  WinnerModel({
+  const WinnerModel({
     required int id,
     required String name,
     required String shortName,
@@ -19,8 +19,8 @@ class WinnerModel extends Winner {
           tla: tla,
         );
 
-
-  factory WinnerModel.fromJson(Map<String, dynamic> json) => _$WinnerModelFromJson(json);
+  factory WinnerModel.fromJson(Map<String, dynamic> json) =>
+      _$WinnerModelFromJson(json);
 
   Map<String, dynamic> toJson() => _$WinnerModelToJson(this);
 }

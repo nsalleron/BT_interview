@@ -11,26 +11,6 @@ part 'match_model.g.dart';
 
 @JsonSerializable()
 class MatchModel extends Match {
-  @override
-  @JsonKey(fromJson: seasonModelFromJson, toJson: seasonModelToJson)
-  final SeasonModel? season;
-  @override
-  @JsonKey(fromJson: oddsModelFromJson, toJson: oddsModelToJson)
-  final OddsModel? odds;
-  @override
-  @JsonKey(fromJson: scoreModelFromJson, toJson: scoreModelToJson)
-  final ScoreModel? score;
-  @override
-  @JsonKey(fromJson: localTeamFromJson, toJson: localTeamToJson)
-  final LocalTeamModel homeTeam;
-  @override
-  @JsonKey(fromJson: localTeamFromJson, toJson: localTeamToJson)
-  final LocalTeamModel awayTeam;
-
-  @override
-  @JsonKey(fromJson: refereesModelFromJson, toJson: refereesModelToJson)
-  final List<RefereesModel>? referees;
-
   const MatchModel({
     int? id,
     this.season,
@@ -45,21 +25,48 @@ class MatchModel extends Match {
     required this.awayTeam,
     this.referees,
   }) : super(
-          id: id,
-          season: season,
-          utcDate: utcDate,
-          status: status,
-          matchday: matchday,
-          stage: stage,
-          lastUpdated: lastUpdated,
-          odds: odds,
-          score: score,
-          homeTeam: homeTeam,
-          awayTeam: awayTeam,
-          referees: referees,
-        );
+    id: id,
+    season: season,
+    utcDate: utcDate,
+    status: status,
+    matchday: matchday,
+    stage: stage,
+    lastUpdated: lastUpdated,
+    odds: odds,
+    score: score,
+    homeTeam: homeTeam,
+    awayTeam: awayTeam,
+    referees: referees,
+  );
 
-  factory MatchModel.fromJson(Map<String, dynamic> json) => _$MatchModelFromJson(json);
+  factory MatchModel.fromJson(Map<String, dynamic> json) =>
+      _$MatchModelFromJson(json);
+
+  @override
+  @JsonKey(fromJson: seasonModelFromJson, toJson: seasonModelToJson)
+  // ignore: overridden_fields
+  final SeasonModel? season;
+  @override
+  @JsonKey(fromJson: oddsModelFromJson, toJson: oddsModelToJson)
+  // ignore: overridden_fields
+  final OddsModel? odds;
+  @override
+  @JsonKey(fromJson: scoreModelFromJson, toJson: scoreModelToJson)
+  // ignore: overridden_fields
+  final ScoreModel? score;
+  @override
+  @JsonKey(fromJson: localTeamFromJson, toJson: localTeamToJson)
+  // ignore: overridden_fields
+  final LocalTeamModel homeTeam;
+  @override
+  @JsonKey(fromJson: localTeamFromJson, toJson: localTeamToJson)
+  // ignore: overridden_fields
+  final LocalTeamModel awayTeam;
+
+  @override
+  @JsonKey(fromJson: refereesModelFromJson, toJson: refereesModelToJson)
+  // ignore: overridden_fields
+  final List<RefereesModel>? referees;
 
   Map<String, dynamic> toJson() => _$MatchModelToJson(this);
 }

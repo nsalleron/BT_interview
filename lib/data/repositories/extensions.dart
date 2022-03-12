@@ -9,12 +9,14 @@ extension HttpResponseExtension<T> on HttpResponse<T> {
     if (response.statusCode == HttpStatus.ok) {
       return DataSuccess(success(data));
     }
-    return DataFailed(DioError(
-      requestOptions: response.requestOptions,
-      response: response,
-      error: response.statusMessage,
-      type: DioErrorType.response,
-    ));
+    return DataFailed(
+      DioError(
+        requestOptions: response.requestOptions,
+        response: response,
+        error: response.statusMessage,
+        type: DioErrorType.response,
+      ),
+    );
   }
 }
 

@@ -19,7 +19,7 @@ class FootballRepositoryImpl implements FootballRepository {
     required this.footballApiService,
     Options? footballRepositoryOptions,
   }) : footballRepositoryOptions = footballRepositoryOptions ??
-      buildCacheOptions(const Duration(minutes: 5));
+            buildCacheOptions(const Duration(minutes: 5));
 
   final FootballApiService footballApiService;
   Options footballRepositoryOptions;
@@ -28,7 +28,7 @@ class FootballRepositoryImpl implements FootballRepository {
   Future<DataState<Matches>> getMatches(MatchRequestParams params) async {
     try {
       final HttpResponse<MatchResponseModel> response =
-      await footballApiService.getMatches(
+          await footballApiService.getMatches(
         competitionId: params.competitionId,
         dateFrom: params.dateFrom,
         dateTo: params.dateTo,
@@ -37,7 +37,7 @@ class FootballRepositoryImpl implements FootballRepository {
       );
 
       return response.whenSuccessOrDefaultError<Matches>(
-            (MatchResponseModel p0) => p0.matches,
+        (MatchResponseModel p0) => p0.matches,
       );
     } on DioError catch (e) {
       return DataFailed(e);
@@ -48,7 +48,7 @@ class FootballRepositoryImpl implements FootballRepository {
   Future<DataState<TeamModel>> getTeams(TeamRequestParams params) async {
     try {
       final HttpResponse<TeamResponseModel> response =
-      await footballApiService.getTeam(
+          await footballApiService.getTeam(
         teamId: params.teamId,
         options: footballRepositoryOptions,
       );
@@ -60,11 +60,11 @@ class FootballRepositoryImpl implements FootballRepository {
 
   @override
   Future<DataState<Competitions?>> getCompetitions(
-      CompetitionsRequestParams params,
-      ) async {
+    CompetitionsRequestParams params,
+  ) async {
     try {
       final HttpResponse<CompetitionResponseModel> response =
-      await footballApiService.getCompetitions(
+          await footballApiService.getCompetitions(
         plan: params.plan,
         options: footballRepositoryOptions,
       );
