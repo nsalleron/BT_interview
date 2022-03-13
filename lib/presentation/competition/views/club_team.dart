@@ -1,23 +1,27 @@
+import 'package:flutball/core/utils/dimens.dart';
 import 'package:flutball/domain/entities/team.dart';
 import 'package:flutball/presentation/competition/components/club_icon.dart';
 import 'package:flutball/presentation/competition/components/key_title_and_bold_value.dart';
 import 'package:flutball/presentation/extensions/extensions.dart';
 import 'package:flutter/material.dart';
 
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 class ClubTeam extends StatelessWidget {
   const ClubTeam({
     Key? key,
-    required this.team,
-  }) : super(key: key);
+    required Team team,
+  })  : _team = team,
+        super(key: key);
 
-  final Team team;
+  final Team _team;
 
   @override
   Widget build(BuildContext context) {
-    final gradient = team.clubColors?.toColors() ?? [];
+    final gradient = _team.clubColors?.toColors() ?? [];
     return Card(
       child: Container(
-        padding: const EdgeInsets.all(8),
+        padding: const EdgeInsets.all(Dimens.halfPadding),
         decoration: gradient.isNotEmpty
             ? BoxDecoration(
                 gradient: LinearGradient(
@@ -35,33 +39,33 @@ class ClubTeam extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   KeyTitleAndBoldValueText(
-                    title: 'Area : ',
-                    value: team.area?.name,
+                    title: AppLocalizations.of(context)?.club_area,
+                    value: _team.area?.name,
                   ),
                   KeyTitleAndBoldValueText(
-                    title: 'Address : ',
-                    value: team.address,
+                    title: AppLocalizations.of(context)?.club_address,
+                    value: _team.address,
                   ),
                   KeyTitleAndBoldValueText(
-                    title: 'Website : ',
-                    value: team.website,
+                    title: AppLocalizations.of(context)?.club_website,
+                    value: _team.website,
                   ),
                   KeyTitleAndBoldValueText(
-                    title: 'Email : ',
-                    value: team.email,
+                    title: AppLocalizations.of(context)?.club_email,
+                    value: _team.email,
                   ),
                   KeyTitleAndBoldValueText(
-                    title: 'Founded : ',
-                    value: team.founded?.toString(),
+                    title: AppLocalizations.of(context)?.club_founded,
+                    value: _team.founded?.toString(),
                   ),
                   KeyTitleAndBoldValueText(
-                    title: 'Venue : ',
-                    value: team.venue,
+                    title: AppLocalizations.of(context)?.club_venue,
+                    value: _team.venue,
                   )
                 ],
               ),
             ),
-            ClubIcon(url: team.crestUrl)
+            CompetitionIcon(url: _team.crestUrl)
           ],
         ),
       ),

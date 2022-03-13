@@ -1,6 +1,22 @@
 {
-    "app_title": "Flutball",
-    "competition_title": "name: ",
-    "competition_country": "country: ",
-    "tech_dataFailure": "Data seem's to be corrumpt!"
+  "app_title": "Flutball",
+  "competition_title": "name: ",
+  "competition_country": "country: ",
+  "competition_startDate": "start date:",
+  "competition_endDate": "end date:",
+  "competition_lastUpdate": "Last update: ",
+  "club_area": "Area: ",
+  "club_address": "Address: ",
+  "club_website": "Website: ",
+  "club_email": "Email: ",
+  "club_founded": "Founded: ",
+  "club_venue": "Venue: ",
+  "team_noWinnerYet": "No winner yet ! :(",
+  "team_playerRole": "Player role: ",
+  "team_playerNationality": "Player nationality: ",
+  "team_playerCountry": "Player country: ",
+  "team_playerDateOfBirth": "Player date of birth: ",
+  "team_playerPosition": "Player position: ",
+  "team_playerName": "Player name: ",
+  "tech_dataFailure": "Data seem's to be corrumpt!"
 }

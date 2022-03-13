@@ -1,3 +1,4 @@
+import 'package:flutball/core/utils/dimens.dart';
 import 'package:flutball/domain/entities/competition.dart';
 import 'package:flutball/domain/entities/team.dart';
 import 'package:flutball/presentation/competition/components/circular_loading.dart';
@@ -24,7 +25,7 @@ class _CompetitionPageState extends State<CompetitionPage> {
   @override
   Widget build(BuildContext teamPageContext) => Scaffold(
         appBar: AppBar(
-          title: Text(AppLocalizations.of(context)?.competition_title ?? ''),
+          title: Text(AppLocalizations.of(context)?.app_title ?? ''),
         ),
         body: BlocConsumer<CompetitionCubit, CompetitionState>(
           listener: (BuildContext context, CompetitionState state) {
@@ -36,10 +37,10 @@ class _CompetitionPageState extends State<CompetitionPage> {
             if (competitionState is CompetitionFailure) {
               return const _FailedCompetitionState();
             }
-            final List<Widget> competitions = computeCompetition(competitionState);
+            final List<Widget> competitions = _computeCompetition(competitionState);
             return PageView.builder(
               itemCount: competitions.length,
-              onPageChanged: (page) => fetchTeam(competitionState, page),
+              onPageChanged: (page) => _fetchTeam(competitionState, page),
               itemBuilder: (BuildContext context, int index) {
                 return competitions[index];
               },
@@ -48,7 +49,7 @@ class _CompetitionPageState extends State<CompetitionPage> {
         ),
       );
 
-  void fetchTeam(
+  void _fetchTeam(
     CompetitionState competitionState,
     int page,
   ) =>
@@ -58,11 +59,11 @@ class _CompetitionPageState extends State<CompetitionPage> {
               )
           : null;
 
-  List<Widget> computeCompetition(CompetitionState competitionState) {
+  List<Widget> _computeCompetition(CompetitionState competitionState) {
     return competitionState is CompetitionSuccess
         ? competitionState.competitions
             .map(
-              (currentCompetition) => _Competition(currentCompetition: currentCompetition),
+              (currentCompetition) => _CompetitionAndTeam(currentCompetition: currentCompetition),
             )
             .toList(growable: false)
         : [];
@@ -87,12 +88,14 @@ class _FailedCompetitionState extends StatelessWidget {
   }
 }
 
-class _Competition extends StatelessWidget {
-  const _Competition({
+class _CompetitionAndTeam extends StatelessWidget {
+  const _CompetitionAndTeam({
     Key? key,
-    required this.currentCompetition,
-  }) : super(key: key);
-  final Competition currentCompetition;
+    required Competition currentCompetition,
+  })  : _currentCompetition = currentCompetition,
+        super(key: key);
+
+  final Competition _currentCompetition;
 
   @override
   Widget build(BuildContext context) {
@@ -102,18 +105,18 @@ class _Competition extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.max,
           children: [
-            CompetitionHeader(comp: currentCompetition),
+            CompetitionHeader(comp: _currentCompetition),
             BlocBuilder<TeamCubit, TeamState>(
               builder: (buildContext, state) {
                 if (state is TeamLoading) {
-                  return const _TeamLoadingPage();
+                  return const CircularLoading();
                 }
                 if (state is TeamSuccess) {
                   return _TeamSuccessPage(team: state.team);
                 }
                 if (state is TeamFailed) {
                   return _TeamPageFailed(
-                    competition: currentCompetition,
+                    competition: _currentCompetition,
                     errorMessage: state.errorMessage,
                   );
                 }
@@ -133,12 +136,14 @@ class _Competition extends StatelessWidget {
 class _TeamPageFailed extends StatelessWidget {
   const _TeamPageFailed({
     Key? key,
-    required this.competition,
-    required this.errorMessage,
-  }) : super(key: key);
+    required Competition competition,
+    required String errorMessage,
+  })  : _competition = competition,
+        _errorMessage = errorMessage,
+        super(key: key);
 
-  final Competition competition;
-  final String errorMessage;
+  final Competition _competition;
+  final String _errorMessage;
 
   @override
   Widget build(BuildContext context) {
@@ -147,9 +152,9 @@ class _TeamPageFailed extends StatelessWidget {
         mainAxisSize: MainAxisSize.max,
         children: [
           Padding(
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.all(Dimens.largePadding),
             child: Text(
-              errorMessage,
+              _errorMessage,
               style: const TextStyle(
                 fontStyle: FontStyle.italic,
                 fontWeight: FontWeight.bold,
@@ -158,13 +163,12 @@ class _TeamPageFailed extends StatelessWidget {
           ),
           Padding(
             padding: const EdgeInsets.only(
-              top: 16,
-              left: 16,
-              right: 16,
-              bottom: 0,
+              top: Dimens.largePadding,
+              left: Dimens.largePadding,
+              right: Dimens.largePadding,
             ),
             child: RefreshIndicator(
-              onRefresh: () => context.read<TeamCubit>().fetchBestTeam(competition: competition),
+              onRefresh: () => context.read<TeamCubit>().fetchBestTeam(competition: _competition),
               child: SingleChildScrollView(
                 physics: const AlwaysScrollableScrollPhysics(),
                 child: SvgPicture.asset(
@@ -185,12 +189,12 @@ class _TeamNoMatchesYet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Card(
+    return Card(
       child: Padding(
-        padding: EdgeInsets.all(16),
+        padding: const EdgeInsets.all(Dimens.largePadding),
         child: Text(
-          'No winner yet ! :(',
-          style: TextStyle(
+          AppLocalizations.of(context)?.team_noWinnerYet ?? '',
+          style: const TextStyle(
             fontStyle: FontStyle.italic,
             fontWeight: FontWeight.bold,
           ),
@@ -200,19 +204,14 @@ class _TeamNoMatchesYet extends StatelessWidget {
   }
 }
 
-class _TeamLoadingPage extends StatelessWidget {
-  const _TeamLoadingPage({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return const CircularLoading();
-  }
-}
-
 class _TeamSuccessPage extends StatelessWidget {
-  const _TeamSuccessPage({Key? key, required this.team}) : super(key: key);
+  const _TeamSuccessPage({
+    Key? key,
+    required Team team,
+  })  : _team = team,
+        super(key: key);
 
-  final Team team;
+  final Team _team;
 
   @override
   Widget build(BuildContext context) {
@@ -220,14 +219,14 @@ class _TeamSuccessPage extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.max,
       children: [
-        ClubTeam(team: team),
-        if (team.squad?.isNotEmpty == true)
+        ClubTeam(team: _team),
+        if (_team.squad?.isNotEmpty == true)
           Card(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const Padding(
-                  padding: EdgeInsets.all(16),
+                  padding: EdgeInsets.all(Dimens.largePadding),
                   child: Text(
                     'Current squad : ',
                     style: TextStyle(
@@ -236,7 +235,7 @@ class _TeamSuccessPage extends StatelessWidget {
                     ),
                   ),
                 ),
-                Players(squad: team.squad!)
+                Players(squad: _team.squad!)
               ],
             ),
           )
@@ -246,7 +245,7 @@ class _TeamSuccessPage extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const Padding(
-                  padding: EdgeInsets.all(16),
+                  padding: EdgeInsets.all(Dimens.largePadding),
                   child: Text(
                     'No selection for now!',
                     style: TextStyle(
@@ -258,7 +257,7 @@ class _TeamSuccessPage extends StatelessWidget {
                 Align(
                   alignment: Alignment.bottomCenter,
                   child: Padding(
-                    padding: const EdgeInsets.all(16),
+                    padding: const EdgeInsets.all(Dimens.largePadding),
                     child: SvgPicture.asset(
                       'assets/svg/nosquad.svg',
                       fit: BoxFit.fitHeight,

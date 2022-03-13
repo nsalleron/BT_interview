@@ -3,12 +3,14 @@ import 'package:flutter/widgets.dart';
 class KeyTitleAndBoldValueText extends StatelessWidget {
   const KeyTitleAndBoldValueText({
     Key? key,
-    required this.title,
-    required this.value,
-  }) : super(key: key);
+    required String? title,
+    required String? value,
+  })  : _title = title,
+        _value = value,
+        super(key: key);
 
-  final String title;
-  final String? value;
+  final String? _title;
+  final String? _value;
 
   @override
   Widget build(BuildContext context) {
@@ -17,9 +19,9 @@ class KeyTitleAndBoldValueText extends StatelessWidget {
       text: TextSpan(
         style: DefaultTextStyle.of(context).style,
         children: [
-          TextSpan(text: title),
+          TextSpan(text: _title ?? ''),
           TextSpan(
-            text: value,
+            text: _value,
             style: const TextStyle(fontWeight: FontWeight.bold),
           )
         ],

@@ -34,9 +34,9 @@ class MockGetTeamUseCase extends _i1.Mock implements _i3.GetTeamUseCase {
   @override
   _i4.Future<_i2.DataState<_i5.Team>> call(_i6.TeamRequestParams? params) =>
       (super.noSuchMethod(Invocation.method(#call, [params]),
-          returnValue: Future<_i2.DataState<_i5.Team>>.value(
-              _FakeDataState_0<_i5.Team>()))
-      as _i4.Future<_i2.DataState<_i5.Team>>);
+              returnValue: Future<_i2.DataState<_i5.Team>>.value(
+                  _FakeDataState_0<_i5.Team>()))
+          as _i4.Future<_i2.DataState<_i5.Team>>);
   @override
   String toString() => super.toString();
 }
@@ -51,11 +51,11 @@ class MockGetMatchesUseCase extends _i1.Mock implements _i7.GetMatchesUseCase {
 
   @override
   _i4.Future<_i2.DataState<List<_i8.Match>>> call(
-      _i9.MatchRequestParams? params) =>
+          _i9.MatchRequestParams? params) =>
       (super.noSuchMethod(Invocation.method(#call, [params]),
-          returnValue: Future<_i2.DataState<List<_i8.Match>>>.value(
-              _FakeDataState_0<List<_i8.Match>>()))
-      as _i4.Future<_i2.DataState<List<_i8.Match>>>);
+              returnValue: Future<_i2.DataState<List<_i8.Match>>>.value(
+                  _FakeDataState_0<List<_i8.Match>>()))
+          as _i4.Future<_i2.DataState<List<_i8.Match>>>);
   @override
   String toString() => super.toString();
 }

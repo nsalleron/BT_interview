@@ -1,12 +1,12 @@
-import 'package:flutball/presentation/competition/components/circular_loading.dart';
+import 'package:flutball/core/utils/dimens.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:path/path.dart' as p;
 
 const _edgeSize = 100.0;
 
-class ClubIcon extends StatelessWidget {
-  const ClubIcon({
+class CompetitionIcon extends StatelessWidget {
+  const CompetitionIcon({
     Key? key,
     required this.url,
   }) : super(key: key);
@@ -15,7 +15,7 @@ class ClubIcon extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Padding(
-        padding: const EdgeInsets.all(8),
+        padding: const EdgeInsets.all(Dimens.halfPadding),
         child: () {
           if (url == null) {
             return const Icon(

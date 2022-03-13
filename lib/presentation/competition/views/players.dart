@@ -1,15 +1,19 @@
+import 'package:flutball/core/utils/dimens.dart';
 import 'package:flutball/domain/entities/squad.dart';
 import 'package:flutball/presentation/competition/components/key_title_and_bold_value.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 class Players extends StatelessWidget {
   Players({
     Key? key,
-    required this.squad,
-  }) : super(key: key);
+    required List<Squad> squad,
+  })  : _squad = squad,
+        super(key: key);
 
-  final List<Squad> squad;
+  final List<Squad> _squad;
   final DateFormat _format = DateFormat('yyyy-MM-dd');
 
   @override
@@ -17,37 +21,37 @@ class Players extends StatelessWidget {
     return Column(
       mainAxisSize: MainAxisSize.max,
       children: [
-        ...squad.map(
+        ..._squad.map(
           (e) => Card(
             child: Padding(
-              padding: const EdgeInsets.all(8),
+              padding: const EdgeInsets.all(Dimens.halfPadding),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 mainAxisSize: MainAxisSize.max,
                 children: [
                   KeyTitleAndBoldValueText(
-                    title: 'Player name: ',
+                    title: AppLocalizations.of(context)?.team_playerName,
                     value: e.name,
                   ),
                   KeyTitleAndBoldValueText(
-                    title: 'Player position: ',
+                    title: AppLocalizations.of(context)?.team_playerPosition,
                     value: e.position,
                   ),
                   if (e.dateOfBirth != null)
                     KeyTitleAndBoldValueText(
-                      title: 'Player date of birth: ',
+                      title: AppLocalizations.of(context)?.team_playerDateOfBirth,
                       value: _format.format(DateTime.parse(e.dateOfBirth ?? '')),
                     ),
                   KeyTitleAndBoldValueText(
-                    title: 'Player country: ',
+                    title: AppLocalizations.of(context)?.competition_country,
                     value: e.countryOfBirth,
                   ),
                   KeyTitleAndBoldValueText(
-                    title: 'Player nationality: ',
+                    title: AppLocalizations.of(context)?.team_playerNationality,
                     value: e.nationality,
                   ),
                   KeyTitleAndBoldValueText(
-                    title: 'Player role: ',
+                    title: AppLocalizations.of(context)?.team_playerRole,
                     value: e.role,
                   ),
                 ],

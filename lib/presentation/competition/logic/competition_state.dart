@@ -1,11 +1,17 @@
 part of 'competition_cubit.dart';
 
 @immutable
-abstract class CompetitionState {}
+abstract class CompetitionState extends Equatable{}
 
-class CompetitionInitial extends CompetitionState {}
+class CompetitionInitial extends CompetitionState {
+  @override
+  List<Object?> get props => [];
+}
 
-class CompetitionLoading extends CompetitionState {}
+class CompetitionLoading extends CompetitionState {
+  @override
+  List<Object?> get props => [];
+}
 
 class CompetitionSuccess extends CompetitionState {
   CompetitionSuccess({
@@ -13,6 +19,12 @@ class CompetitionSuccess extends CompetitionState {
   });
 
   final Competitions competitions;
+
+  @override
+  List<Object?> get props => [competitions];
 }
 
-class CompetitionFailure extends CompetitionState {}
+class CompetitionFailure extends CompetitionState {
+  @override
+  List<Object?> get props => [];
+}

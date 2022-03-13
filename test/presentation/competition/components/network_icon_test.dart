@@ -5,10 +5,10 @@ import 'package:golden_toolkit/golden_toolkit.dart';
 
 void main() {
   testWidgets(
-    '''GIVEN null url WHEN $ClubIcon is displayed THEN not found icon should be displayed''',
+    '''GIVEN null url WHEN $CompetitionIcon is displayed THEN not found icon should be displayed''',
     (WidgetTester tester) async {
       // GIVEN
-      const ClubIcon clubIcon = ClubIcon(url: null);
+      const CompetitionIcon clubIcon = CompetitionIcon(url: null);
 
       // WHEN
       await tester.pumpWidgetBuilder(clubIcon);

@@ -16,24 +16,23 @@ import 'package:retrofit/retrofit.dart';
 
 class FootballRepositoryImpl implements FootballRepository {
   FootballRepositoryImpl({
-    required this.footballApiService,
+    required FootballApiService footballApiService,
     Options? footballRepositoryOptions,
-  }) : footballRepositoryOptions = footballRepositoryOptions ??
-            buildCacheOptions(const Duration(minutes: 5));
+  })  : _footballApiService = footballApiService,
+        _footballRepositoryOptions = footballRepositoryOptions ?? buildCacheOptions(const Duration(minutes: 5));
 
-  final FootballApiService footballApiService;
-  Options footballRepositoryOptions;
+  final FootballApiService _footballApiService;
+  final Options _footballRepositoryOptions;
 
   @override
   Future<DataState<Matches>> getMatches(MatchRequestParams params) async {
     try {
-      final HttpResponse<MatchResponseModel> response =
-          await footballApiService.getMatches(
+      final HttpResponse<MatchResponseModel> response = await _footballApiService.getMatches(
         competitionId: params.competitionId,
         dateFrom: params.dateFrom,
         dateTo: params.dateTo,
         status: params.status,
-        options: footballRepositoryOptions,
+        options: _footballRepositoryOptions,
       );
 
       return response.whenSuccessOrDefaultError<Matches>(
@@ -48,9 +47,9 @@ class FootballRepositoryImpl implements FootballRepository {
   Future<DataState<TeamModel>> getTeams(TeamRequestParams params) async {
     try {
       final HttpResponse<TeamResponseModel> response =
-          await footballApiService.getTeam(
+      await _footballApiService.getTeam(
         teamId: params.teamId,
-        options: footballRepositoryOptions,
+        options: _footballRepositoryOptions,
       );
       return response.whenSuccessOrDefaultError<TeamModel>((p0) => p0.team);
     } on DioError catch (e) {
@@ -64,9 +63,9 @@ class FootballRepositoryImpl implements FootballRepository {
   ) async {
     try {
       final HttpResponse<CompetitionResponseModel> response =
-          await footballApiService.getCompetitions(
+      await _footballApiService.getCompetitions(
         plan: params.plan,
-        options: footballRepositoryOptions,
+        options: _footballRepositoryOptions,
       );
       return response
           .whenSuccessOrDefaultError<Competitions?>((p0) => p0.competitions);

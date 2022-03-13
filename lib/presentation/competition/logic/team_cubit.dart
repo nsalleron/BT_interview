@@ -18,12 +18,14 @@ part 'team_state.dart';
 
 class TeamCubit extends Cubit<TeamState> {
   TeamCubit({
-    required this.getTeamUseCase,
-    required this.getMatchesUseCase,
-  }) : super(TeamInitial());
+    required GetTeamUseCase getTeamUseCase,
+    required GetMatchesUseCase getMatchesUseCase,
+  })  : _getTeamUseCase = getTeamUseCase,
+        _getMatchesUseCase = getMatchesUseCase,
+        super(TeamInitial());
 
-  GetTeamUseCase getTeamUseCase;
-  GetMatchesUseCase getMatchesUseCase;
+  final GetTeamUseCase _getTeamUseCase;
+  final GetMatchesUseCase _getMatchesUseCase;
   final DateTime _now = DateTime.now();
   final DateFormat formatter = DateFormat('yyyy-MM-dd');
   late bool isCompetitionFinished;
@@ -41,7 +43,7 @@ class TeamCubit extends Cubit<TeamState> {
     }
     final int teamId = _retrieveBestTeamFromMatches(matches);
 
-    final DataState<Team> teamDataState = await getTeamUseCase(TeamRequestParams(teamId: teamId));
+    final DataState<Team> teamDataState = await _getTeamUseCase(TeamRequestParams(teamId: teamId));
     teamDataState.when(_onTeamFetched, _onTeamFailed);
   }
 
@@ -77,7 +79,7 @@ class TeamCubit extends Cubit<TeamState> {
   Future<DataState<Matches>> _retrieveMatchesFromCompetition(
     Competition competition,
   ) =>
-      getMatchesUseCase(
+      _getMatchesUseCase(
         isCompetitionFinished
             ? MatchRequestParams(competitionId: competition.id)
             : MatchRequestParams(

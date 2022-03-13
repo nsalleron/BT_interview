@@ -6,9 +6,10 @@ import 'package:flutter/material.dart';
 class CompetitionHeader extends StatelessWidget {
   const CompetitionHeader({
     Key? key,
-    required this.comp,
-  }) : super(key: key);
-  final Competition comp;
+    required Competition comp,
+  })  : _comp = comp,
+        super(key: key);
+  final Competition _comp;
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +18,7 @@ class CompetitionHeader extends StatelessWidget {
         children: [
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [GlobalHeaderInformation(comp: comp), ClubIcon(url: comp.emblemUrl)],
+            children: [GlobalHeaderInformation(comp: _comp), CompetitionIcon(url: _comp.emblemUrl)],
           ),
         ],
       ),
