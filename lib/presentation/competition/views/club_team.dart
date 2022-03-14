@@ -39,6 +39,10 @@ class ClubTeam extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   TextWithBoldValue(
+                    title: I18n.current.club_name,
+                    value: '${_team.name} / ${_team.shortName}',
+                  ),
+                  TextWithBoldValue(
                     title: I18n.current.club_area,
                     value: _team.area?.name,
                   ),

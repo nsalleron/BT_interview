@@ -1,0 +1,1 @@
+flutter pub get && cd i18n && flutter pub get && cd ..

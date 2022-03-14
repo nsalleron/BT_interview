@@ -1,18 +1,17 @@
-# flutball
+# flutball (BT interview test)
 [![codecov](https://codecov.io/gh/nsalleron/BT_interview/branch/master/graph/badge.svg?token=5XL1G6ASCW)](https://codecov.io/gh/nsalleron/BT_interview)
 [![Flutter](https://github.com/nsalleron/BT_interview/actions/workflows/ci.yml/badge.svg)](https://github.com/nsalleron/BT_interview/actions/workflows/ci.yml)
 
-A new Flutter project.
+## You will find here
+
+- Clean Architecture pattern
+- Cubit pattern
+- Unit test / bloc_test / golden test / integration_test
+- Internationalization module
+- codecov and github action
 
 ## Getting Started
 
-This project is a starting point for a Flutter application.
+Don't forget to run flutter pub get on this project AND the module or you can also use ./pget at the root of the project
 
-A few resources to get you started if this is your first Flutter project:
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
-
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.

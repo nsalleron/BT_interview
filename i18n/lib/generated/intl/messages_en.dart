@@ -27,6 +27,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "club_area": MessageLookupByLibrary.simpleMessage("Area: "),
         "club_email": MessageLookupByLibrary.simpleMessage("Email: "),
         "club_founded": MessageLookupByLibrary.simpleMessage("Founded: "),
+        "club_name": MessageLookupByLibrary.simpleMessage("Name: "),
         "club_venue": MessageLookupByLibrary.simpleMessage("Venue: "),
         "club_website": MessageLookupByLibrary.simpleMessage("Website: "),
         "competition_country":

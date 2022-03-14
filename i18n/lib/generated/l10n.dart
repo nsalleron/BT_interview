@@ -110,6 +110,16 @@ class I18n {
     );
   }
 
+  /// `Name: `
+  String get club_name {
+    return Intl.message(
+      'Name: ',
+      name: 'club_name',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Area: `
   String get club_area {
     return Intl.message(

@@ -6,6 +6,7 @@
   "competition_startDate": "start date:",
   "competition_endDate": "end date:",
   "competition_lastUpdate": "Last update: ",
+  "club_name": "Name: ",
   "club_area": "Area: ",
   "club_address": "Address: ",
   "club_website": "Website: ",
