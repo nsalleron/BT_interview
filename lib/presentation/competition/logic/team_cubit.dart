@@ -16,6 +16,8 @@ import 'package:intl/intl.dart';
 
 part 'team_state.dart';
 
+const _thirtyDaysDuration = Duration(days: 30);
+
 class TeamCubit extends Cubit<TeamState> {
   TeamCubit({
     required GetTeamUseCase getTeamUseCase,
@@ -27,7 +29,7 @@ class TeamCubit extends Cubit<TeamState> {
   final GetTeamUseCase _getTeamUseCase;
   final GetMatchesUseCase _getMatchesUseCase;
   final DateTime _now = DateTime.now();
-  final DateFormat formatter = DateFormat('yyyy-MM-dd');
+  final DateFormat _formatter = DateFormat('yyyy-MM-dd');
   late bool isCompetitionFinished;
 
   Future<void> fetchBestTeam({required Competition competition}) async {
@@ -47,8 +49,6 @@ class TeamCubit extends Cubit<TeamState> {
     teamDataState.when(_onTeamFetched, _onTeamFailed);
   }
 
-  int? _getWinner(Match e) => e.score?.winner! == 'HOME_TEAM' ? e.homeTeam.id : e.awayTeam.id;
-
   int _retrieveBestTeamFromMatches(Matches matches) {
     final Matches filteredMatches = isCompetitionFinished ? matches.findLastMatchDateAndMinusThirtyDays() : matches;
 
@@ -64,6 +64,11 @@ class TeamCubit extends Cubit<TeamState> {
         .first;
   }
 
+  int? _getWinner(Match e) =>
+      e.score?.winner! == 'HOME_TEAM' // TODO(nsalleron): Should be static const in a "Type" Class
+          ? e.homeTeam.id
+          : e.awayTeam.id;
+
   void _onMatchesFailed(DioError error) => {
         emit(
           // ignore: avoid_dynamic_calls
@@ -71,8 +76,9 @@ class TeamCubit extends Cubit<TeamState> {
         )
       };
 
-  void _onTeamFetched(Team? successTeam) =>
-      successTeam != null ? emit(TeamLoadSuccess(team: successTeam)) : emit(const TeamLoadFailed(errorMessage: 'Team is null'));
+  void _onTeamFetched(Team? successTeam) => successTeam != null
+      ? emit(TeamLoadSuccess(team: successTeam))
+      : emit(const TeamLoadFailed(errorMessage: 'Team is null'));
 
   void _onTeamFailed(DioError error) => emit(TeamLoadFailed(errorMessage: error.message));
 
@@ -91,24 +97,23 @@ class TeamCubit extends Cubit<TeamState> {
 
   bool _isCompetitionFinished(CurrentSeason currentSeason) => DateTime.parse(currentSeason.endDate).isBefore(_now);
 
-  String _thirtyDaysBeforeNow() => formatter.format(_now.subtract(const Duration(days: 30)));
+  String _thirtyDaysBeforeNow() => _formatter.format(_now.subtract(_thirtyDaysDuration));
 
-  String _dateNow() => formatter.format(_now);
+  String _dateNow() => _formatter.format(_now);
 
   void _noMatches() => emit(TeamLoadFailedNoMatches());
 }
 
-extension ExtensionMatches on Matches {
+extension _ExtensionMatches on Matches {
   Matches findLastMatchDateAndMinusThirtyDays() {
     final Match lastMatch = filter((element) => element.utcDate != null).toList().cast<Match>().reduce(
           (value, element) =>
               DateTime.parse(value.utcDate!).isAfter(DateTime.parse(element.utcDate!)) ? value : element,
         );
-    final DateTime beginningOfSortingByDate = DateTime.parse(lastMatch.utcDate!).subtract(const Duration(days: 30));
+    final DateTime beginningOfSortingByDate = DateTime.parse(lastMatch.utcDate!).subtract(_thirtyDaysDuration);
 
-    final Matches filteredMatches = filter((element) => DateTime.parse(element.utcDate!).isAfter(beginningOfSortingByDate))
-        .toList()
-        .cast<Match>();
+    final Matches filteredMatches =
+        filter((element) => DateTime.parse(element.utcDate!).isAfter(beginningOfSortingByDate)).toList().cast<Match>();
     return filteredMatches;
   }
 }
