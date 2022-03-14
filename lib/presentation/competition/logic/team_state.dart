@@ -2,20 +2,17 @@ part of 'team_cubit.dart';
 
 abstract class TeamState extends Equatable {
   const TeamState();
-}
 
-class TeamInitial extends TeamState {
   @override
   List<Object> get props => [];
 }
 
-class TeamLoading extends TeamState {
-  @override
-  List<Object> get props => [];
-}
+class TeamInitial extends TeamState {}
 
-class TeamSuccess extends TeamState {
-  const TeamSuccess({
+class TeamLoadInProgress extends TeamState {}
+
+class TeamLoadSuccess extends TeamState {
+  const TeamLoadSuccess({
     required this.team,
   });
 
@@ -25,8 +22,8 @@ class TeamSuccess extends TeamState {
   List<Object> get props => [team];
 }
 
-class TeamFailed extends TeamState {
-  const TeamFailed({
+class TeamLoadFailed extends TeamState {
+  const TeamLoadFailed({
     required this.errorMessage,
   });
 
@@ -36,7 +33,4 @@ class TeamFailed extends TeamState {
   List<Object> get props => [errorMessage];
 }
 
-class TeamNoMatchesYet extends TeamState {
-  @override
-  List<Object?> get props => [];
-}
+class TeamLoadFailedNoMatches extends TeamState {}

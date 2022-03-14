@@ -8,7 +8,7 @@ part of 'team_model.dart';
 
 TeamModel _$TeamModelFromJson(Map<String, dynamic> json) {
   return TeamModel(
-    id: json['id'] as int?,
+    id: json['id'] as int,
     area: areaFromJson(json['area'] as Map<String, dynamic>?),
     activeCompetitions:
         activeCompetitionsFromJson(json['activeCompetitions'] as List?),

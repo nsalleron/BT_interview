@@ -17,13 +17,13 @@ class CompetitionCubit extends Cubit<CompetitionState> {
   final GetCompetitionUseCase _getCompetitionUseCase;
 
   Future<void> fetchCompetitions({CompetitionsRequestParams? params}) async {
-    emit(CompetitionLoading());
+    emit(CompetitionLoadInProgress());
     final DataState<Competitions?> matchDataState = await _getCompetitionUseCase(
       params ?? const CompetitionsRequestParams(),
     );
     matchDataState.when(
-      (p0) => emit(CompetitionSuccess(competitions: _sortCompetitionByEndDateAndRemoveSvgErrorCompetitions(p0!))),
-      (p0) => emit(CompetitionFailure()),
+      (p0) => emit(CompetitionLoadSuccess(competitions: _sortCompetitionByEndDateAndRemoveSvgErrorCompetitions(p0!))),
+      (p0) => emit(CompetitionLoadFailure()),
     );
   }
 

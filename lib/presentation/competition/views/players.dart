@@ -1,10 +1,9 @@
 import 'package:flutball/core/utils/dimens.dart';
 import 'package:flutball/domain/entities/squad.dart';
-import 'package:flutball/presentation/competition/components/key_title_and_bold_value.dart';
+import 'package:flutball/presentation/competition/components/text_with_bold_value.dart';
 import 'package:flutter/material.dart';
+import 'package:i18n/i18n.dart';
 import 'package:intl/intl.dart';
-
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class Players extends StatelessWidget {
   Players({
@@ -29,29 +28,29 @@ class Players extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 mainAxisSize: MainAxisSize.max,
                 children: [
-                  KeyTitleAndBoldValueText(
-                    title: AppLocalizations.of(context)?.team_playerName,
+                  TextWithBoldValue(
+                    title: I18n.current.team_playerName,
                     value: e.name,
                   ),
-                  KeyTitleAndBoldValueText(
-                    title: AppLocalizations.of(context)?.team_playerPosition,
+                  TextWithBoldValue(
+                    title: I18n.current.team_playerPosition,
                     value: e.position,
                   ),
                   if (e.dateOfBirth != null)
-                    KeyTitleAndBoldValueText(
-                      title: AppLocalizations.of(context)?.team_playerDateOfBirth,
+                    TextWithBoldValue(
+                      title: I18n.current.team_playerDateOfBirth,
                       value: _format.format(DateTime.parse(e.dateOfBirth ?? '')),
                     ),
-                  KeyTitleAndBoldValueText(
-                    title: AppLocalizations.of(context)?.competition_country,
+                  TextWithBoldValue(
+                    title: I18n.current.competition_country,
                     value: e.countryOfBirth,
                   ),
-                  KeyTitleAndBoldValueText(
-                    title: AppLocalizations.of(context)?.team_playerNationality,
+                  TextWithBoldValue(
+                    title: I18n.current.team_playerNationality,
                     value: e.nationality,
                   ),
-                  KeyTitleAndBoldValueText(
-                    title: AppLocalizations.of(context)?.team_playerRole,
+                  TextWithBoldValue(
+                    title: I18n.current.team_playerRole,
                     value: e.role,
                   ),
                 ],

@@ -1,7 +1,7 @@
 import 'package:flutter/widgets.dart';
 
-class KeyTitleAndBoldValueText extends StatelessWidget {
-  const KeyTitleAndBoldValueText({
+class TextWithBoldValue extends StatelessWidget {
+  const TextWithBoldValue({
     Key? key,
     required String? title,
     required String? value,

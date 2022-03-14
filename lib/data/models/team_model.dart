@@ -10,7 +10,7 @@ part 'team_model.g.dart';
 @JsonSerializable()
 class TeamModel extends Team {
   const TeamModel({
-    int? id,
+    required int id,
     this.area,
     this.activeCompetitions,
     String? name,

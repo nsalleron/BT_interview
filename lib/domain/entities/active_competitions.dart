@@ -3,7 +3,7 @@ import 'package:flutball/domain/entities/area.dart';
 
 class ActiveCompetitions extends Equatable {
   const ActiveCompetitions({
-    this.id,
+    required this.id,
     this.area,
     this.name,
     this.code,
@@ -11,7 +11,7 @@ class ActiveCompetitions extends Equatable {
     this.lastUpdated,
   });
 
-  final int? id;
+  final int id;
   final Area? area;
   final String? name;
   final String? code;

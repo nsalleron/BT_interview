@@ -31,7 +31,7 @@ class TeamCubit extends Cubit<TeamState> {
   late bool isCompetitionFinished;
 
   Future<void> fetchBestTeam({required Competition competition}) async {
-    emit(TeamLoading());
+    emit(TeamLoadInProgress());
     isCompetitionFinished = _isCompetitionFinished(competition.currentSeason);
     final DataState<Matches> matchDataState = await _retrieveMatchesFromCompetition(competition);
     matchDataState.when(_onMatchesFetched, _onMatchesFailed);
@@ -39,7 +39,7 @@ class TeamCubit extends Cubit<TeamState> {
 
   Future<void> _onMatchesFetched(Matches? matches) async {
     if (matches == null || matches.isEmpty) {
-      return _noWinnerYet();
+      return _noMatches();
     }
     final int teamId = _retrieveBestTeamFromMatches(matches);
 
@@ -67,14 +67,14 @@ class TeamCubit extends Cubit<TeamState> {
   void _onMatchesFailed(DioError error) => {
         emit(
           // ignore: avoid_dynamic_calls
-          TeamFailed(errorMessage: error.response?.data['message'] as String),
+          TeamLoadFailed(errorMessage: error.response?.data['message'] as String),
         )
       };
 
   void _onTeamFetched(Team? successTeam) =>
-      successTeam != null ? emit(TeamSuccess(team: successTeam)) : emit(const TeamFailed(errorMessage: 'Team is null'));
+      successTeam != null ? emit(TeamLoadSuccess(team: successTeam)) : emit(const TeamLoadFailed(errorMessage: 'Team is null'));
 
-  void _onTeamFailed(DioError error) => emit(TeamFailed(errorMessage: error.message));
+  void _onTeamFailed(DioError error) => emit(TeamLoadFailed(errorMessage: error.message));
 
   Future<DataState<Matches>> _retrieveMatchesFromCompetition(
     Competition competition,
@@ -95,7 +95,7 @@ class TeamCubit extends Cubit<TeamState> {
 
   String _dateNow() => formatter.format(_now);
 
-  void _noWinnerYet() => emit(TeamNoMatchesYet());
+  void _noMatches() => emit(TeamLoadFailedNoMatches());
 }
 
 extension ExtensionMatches on Matches {

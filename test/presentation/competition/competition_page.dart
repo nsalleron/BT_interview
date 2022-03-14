@@ -10,10 +10,10 @@ import 'package:flutball/presentation/competition/logic/competition_cubit.dart';
 import 'package:flutball/presentation/competition/logic/team_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:golden_toolkit/golden_toolkit.dart';
+import 'package:i18n/generated/l10n.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 
@@ -129,7 +129,7 @@ class MaterialGolden extends StatelessWidget {
     return MaterialApp(
       title: 'Golden tests',
       localizationsDelegates: const [
-        AppLocalizations.delegate,
+        I18n.delegate,
         GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,
         GlobalCupertinoLocalizations.delegate,

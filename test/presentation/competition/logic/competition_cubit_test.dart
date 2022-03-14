@@ -33,7 +33,7 @@ void main() {
     });
 
     blocTest<CompetitionCubit, CompetitionState>(
-      '''emits [$CompetitionLoading, $CompetitionSuccess] when fetchCompetition is success''',
+      '''emits [$CompetitionLoadInProgress, $CompetitionLoadSuccess] when fetchCompetition is success''',
       setUp: () {
         currentParams = const CompetitionsRequestParams();
       },
@@ -45,14 +45,14 @@ void main() {
         return retrieveNewCubit(mockGetCompetitionUseCase);
       },
       act: (cubit) => cubit.fetchCompetitions(params: currentParams),
-      expect: () => [isA<CompetitionLoading>(), isA<CompetitionSuccess>()],
+      expect: () => [isA<CompetitionLoadInProgress>(), isA<CompetitionLoadSuccess>()],
       verify: (cubit) {
         verify(mockGetCompetitionUseCase.call(currentParams)).called(1);
       },
     );
 
     blocTest<CompetitionCubit, CompetitionState>(
-      '''emits [$CompetitionLoading, $CompetitionFailure] when fetchCompetition is failure''',
+      '''emits [$CompetitionLoadInProgress, $CompetitionLoadFailure] when fetchCompetition is failure''',
       setUp: () {
         currentParams = const CompetitionsRequestParams();
       },
@@ -68,7 +68,7 @@ void main() {
         return retrieveNewCubit(mockGetCompetitionUseCase);
       },
       act: (cubit) => cubit.fetchCompetitions(params: currentParams),
-      expect: () => [isA<CompetitionLoading>(), isA<CompetitionFailure>()],
+      expect: () => [isA<CompetitionLoadInProgress>(), isA<CompetitionLoadFailure>()],
       verify: (cubit) {
         verify(mockGetCompetitionUseCase.call(currentParams)).called(1);
       },

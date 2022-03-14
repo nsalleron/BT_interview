@@ -9,8 +9,8 @@ import 'package:flutball/presentation/competition/views/competition_header.dart'
 import 'package:flutball/presentation/competition/views/players.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:i18n/generated/l10n.dart';
 
 class CompetitionPage extends StatefulWidget {
   const CompetitionPage({Key? key}) : super(key: key);
@@ -24,43 +24,43 @@ class _CompetitionPageState extends State<CompetitionPage> {
 
   @override
   Widget build(BuildContext teamPageContext) => Scaffold(
-        appBar: AppBar(
-          title: Text(AppLocalizations.of(context)?.app_title ?? ''),
+    appBar: AppBar(
+      title: Text(I18n.current.app_title),
         ),
-        body: BlocConsumer<CompetitionCubit, CompetitionState>(
-          listener: (BuildContext context, CompetitionState state) {
-            if (state is CompetitionSuccess && state.competitions.isNotEmpty) {
-              context.read<TeamCubit>().fetchBestTeam(competition: state.competitions.first);
+    body: BlocConsumer<CompetitionCubit, CompetitionState>(
+      listener: (BuildContext context, CompetitionState state) {
+        if (state is CompetitionLoadSuccess && state.competitions.isNotEmpty) {
+          context.read<TeamCubit>().fetchBestTeam(competition: state.competitions.first);
             }
+      },
+      builder: (BuildContext context, CompetitionState competitionState) {
+        if (competitionState is CompetitionLoadFailure) {
+          return const _FailedCompetitionState();
+        }
+        final List<Widget> competitions = _computeCompetition(competitionState);
+        return PageView.builder(
+          itemCount: competitions.length,
+          onPageChanged: (page) => _fetchTeam(competitionState, page),
+          itemBuilder: (BuildContext context, int index) {
+            return competitions[index];
           },
-          builder: (BuildContext context, CompetitionState competitionState) {
-            if (competitionState is CompetitionFailure) {
-              return const _FailedCompetitionState();
-            }
-            final List<Widget> competitions = _computeCompetition(competitionState);
-            return PageView.builder(
-              itemCount: competitions.length,
-              onPageChanged: (page) => _fetchTeam(competitionState, page),
-              itemBuilder: (BuildContext context, int index) {
-                return competitions[index];
-              },
-            );
-          },
-        ),
-      );
+        );
+      },
+    ),
+  );
 
   void _fetchTeam(
     CompetitionState competitionState,
-    int page,
+    int currentPage,
   ) =>
-      competitionState is CompetitionSuccess
+      competitionState is CompetitionLoadSuccess
           ? context.read<TeamCubit>().fetchBestTeam(
-                competition: competitionState.competitions[page],
+                competition: competitionState.competitions[currentPage],
               )
           : null;
 
   List<Widget> _computeCompetition(CompetitionState competitionState) {
-    return competitionState is CompetitionSuccess
+    return competitionState is CompetitionLoadSuccess
         ? competitionState.competitions
             .map(
               (currentCompetition) => _CompetitionAndTeam(currentCompetition: currentCompetition),
@@ -108,19 +108,19 @@ class _CompetitionAndTeam extends StatelessWidget {
             CompetitionHeader(comp: _currentCompetition),
             BlocBuilder<TeamCubit, TeamState>(
               builder: (buildContext, state) {
-                if (state is TeamLoading) {
+                if (state is TeamLoadInProgress) {
                   return const CircularLoading();
                 }
-                if (state is TeamSuccess) {
+                if (state is TeamLoadSuccess) {
                   return _TeamSuccessPage(team: state.team);
                 }
-                if (state is TeamFailed) {
+                if (state is TeamLoadFailed) {
                   return _TeamPageFailed(
                     competition: _currentCompetition,
                     errorMessage: state.errorMessage,
                   );
                 }
-                if (state is TeamNoMatchesYet) {
+                if (state is TeamLoadFailedNoMatches) {
                   return const _TeamNoMatchesYet();
                 }
                 return const SizedBox.shrink();
@@ -193,7 +193,7 @@ class _TeamNoMatchesYet extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.all(Dimens.largePadding),
         child: Text(
-          AppLocalizations.of(context)?.team_noWinnerYet ?? '',
+          I18n.current.team_noWinnerYet,
           style: const TextStyle(
             fontStyle: FontStyle.italic,
             fontWeight: FontWeight.bold,

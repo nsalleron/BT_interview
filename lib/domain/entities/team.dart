@@ -5,7 +5,7 @@ import 'package:flutball/domain/entities/squad.dart';
 
 class Team extends Equatable {
   const Team({
-    this.id,
+    required this.id,
     this.area,
     this.activeCompetitions,
     this.name,
@@ -23,7 +23,7 @@ class Team extends Equatable {
     this.lastUpdated,
   });
 
-  final int? id;
+  final int id;
   final Area? area;
   final List<ActiveCompetitions>? activeCompetitions;
   final String? name;

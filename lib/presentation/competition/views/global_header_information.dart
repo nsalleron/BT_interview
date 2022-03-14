@@ -1,8 +1,8 @@
 import 'package:flutball/core/utils/dimens.dart';
 import 'package:flutball/domain/entities/competition.dart';
-import 'package:flutball/presentation/competition/components/key_title_and_bold_value.dart';
+import 'package:flutball/presentation/competition/components/text_with_bold_value.dart';
 import 'package:flutter/widgets.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:i18n/i18n.dart';
 import 'package:intl/intl.dart';
 
 class GlobalHeaderInformation extends StatelessWidget {
@@ -23,24 +23,24 @@ class GlobalHeaderInformation extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            KeyTitleAndBoldValueText(
-              title: AppLocalizations.of(context)?.competition_title,
+            TextWithBoldValue(
+              title: I18n.current.competition_title,
               value: _comp.name,
             ),
-            KeyTitleAndBoldValueText(
-              title: AppLocalizations.of(context)?.competition_country,
+            TextWithBoldValue(
+              title: I18n.current.competition_country,
               value: _comp.area?.name,
             ),
-            KeyTitleAndBoldValueText(
-              title: AppLocalizations.of(context)?.competition_startDate,
+            TextWithBoldValue(
+              title: I18n.current.competition_startDate,
               value: _comp.currentSeason.startDate,
             ),
-            KeyTitleAndBoldValueText(
-              title: AppLocalizations.of(context)?.competition_endDate,
+            TextWithBoldValue(
+              title: I18n.current.competition_endDate,
               value: _comp.currentSeason.endDate,
             ),
-            KeyTitleAndBoldValueText(
-              title: AppLocalizations.of(context)?.competition_lastUpdate,
+            TextWithBoldValue(
+              title: I18n.current.competition_lastUpdate,
               value: _format.format(DateTime.parse(_comp.lastUpdated)),
             ),
           ],

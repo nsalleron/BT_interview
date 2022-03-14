@@ -8,7 +8,7 @@ part 'active_competitions_model.g.dart';
 @JsonSerializable()
 class ActiveCompetitionsModel extends ActiveCompetitions {
   const ActiveCompetitionsModel({
-    int? id,
+    required int id,
     this.area,
     String? name,
     String? code,

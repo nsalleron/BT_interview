@@ -4,7 +4,7 @@ import 'package:flutball/domain/entities/squad.dart';
 import 'package:flutball/domain/entities/team.dart';
 
 Team teamFixture({
-  int? withId = 0,
+  int withId = 0,
   Area? withArea = const Area(),
   List<ActiveCompetitions>? withActiveCompetitions = const [],
   String? withName = 'aName',

@@ -1,11 +1,11 @@
 import 'package:flutball/core/utils/dimens.dart';
 import 'package:flutball/domain/entities/team.dart';
 import 'package:flutball/presentation/competition/components/club_icon.dart';
-import 'package:flutball/presentation/competition/components/key_title_and_bold_value.dart';
+import 'package:flutball/presentation/competition/components/text_with_bold_value.dart';
 import 'package:flutball/presentation/extensions/extensions.dart';
 import 'package:flutter/material.dart';
 
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:i18n/i18n.dart';
 
 class ClubTeam extends StatelessWidget {
   const ClubTeam({
@@ -38,28 +38,28 @@ class ClubTeam extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  KeyTitleAndBoldValueText(
-                    title: AppLocalizations.of(context)?.club_area,
+                  TextWithBoldValue(
+                    title: I18n.current.club_area,
                     value: _team.area?.name,
                   ),
-                  KeyTitleAndBoldValueText(
-                    title: AppLocalizations.of(context)?.club_address,
+                  TextWithBoldValue(
+                    title: I18n.current.club_address,
                     value: _team.address,
                   ),
-                  KeyTitleAndBoldValueText(
-                    title: AppLocalizations.of(context)?.club_website,
+                  TextWithBoldValue(
+                    title: I18n.current.club_website,
                     value: _team.website,
                   ),
-                  KeyTitleAndBoldValueText(
-                    title: AppLocalizations.of(context)?.club_email,
+                  TextWithBoldValue(
+                    title: I18n.current.club_email,
                     value: _team.email,
                   ),
-                  KeyTitleAndBoldValueText(
-                    title: AppLocalizations.of(context)?.club_founded,
+                  TextWithBoldValue(
+                    title: I18n.current.club_founded,
                     value: _team.founded?.toString(),
                   ),
-                  KeyTitleAndBoldValueText(
-                    title: AppLocalizations.of(context)?.club_venue,
+                  TextWithBoldValue(
+                    title: I18n.current.club_venue,
                     value: _team.venue,
                   )
                 ],
