@@ -35,13 +35,8 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: MultiBlocProvider(
-        providers: [
-          BlocProvider<CompetitionCubit>(
-            create: (_) => appInjector()..fetchCompetitions(),
-          ),
-          BlocProvider<TeamCubit>(create: (_) => appInjector()),
-        ],
+      home: BlocProvider<CompetitionCubit>(
+        create: (_) => appInjector()..fetchCompetitions(),
         child: const CompetitionPage(),
       ),
     );

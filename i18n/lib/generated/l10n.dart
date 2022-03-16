@@ -190,6 +190,16 @@ class I18n {
     );
   }
 
+  /// `Current squad : `
+  String get team_squad {
+    return Intl.message(
+      'Current squad : ',
+      name: 'team_squad',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Player role: `
   String get team_playerRole {
     return Intl.message(

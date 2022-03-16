@@ -49,6 +49,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "team_playerPosition":
             MessageLookupByLibrary.simpleMessage("Position: "),
         "team_playerRole": MessageLookupByLibrary.simpleMessage("Role:"),
+        "team_squad": MessageLookupByLibrary.simpleMessage("Equipe : "),
         "tech_dataFailure":
             MessageLookupByLibrary.simpleMessage("Les données sont corrompues!")
       };

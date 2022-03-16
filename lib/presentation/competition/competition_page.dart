@@ -1,69 +1,52 @@
 import 'package:flutball/core/utils/dimens.dart';
 import 'package:flutball/domain/entities/competition.dart';
 import 'package:flutball/domain/entities/team.dart';
+import 'package:flutball/injector.dart';
 import 'package:flutball/presentation/competition/components/circular_loading.dart';
 import 'package:flutball/presentation/competition/logic/competition_cubit.dart';
 import 'package:flutball/presentation/competition/logic/team_cubit.dart';
 import 'package:flutball/presentation/competition/views/club_team.dart';
+
 import 'package:flutball/presentation/competition/views/competition_header.dart';
 import 'package:flutball/presentation/competition/views/players.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:i18n/generated/l10n.dart';
 
-class CompetitionPage extends StatefulWidget {
+import 'package:i18n/i18n.dart';
+
+class CompetitionPage extends StatelessWidget {
   const CompetitionPage({Key? key}) : super(key: key);
 
   @override
-  _CompetitionPageState createState() => _CompetitionPageState();
-}
-
-class _CompetitionPageState extends State<CompetitionPage> {
-  int initialPage = 0;
-
-  @override
-  Widget build(BuildContext teamPageContext) => Scaffold(
-    appBar: AppBar(
-      title: Text(I18n.current.app_title),
+  Widget build(BuildContext context) => Scaffold(
+        appBar: AppBar(
+          title: Text(I18n.current.app_title),
         ),
-    body: BlocConsumer<CompetitionCubit, CompetitionState>(
-      listener: (BuildContext context, CompetitionState state) {
-        if (state is CompetitionLoadSuccess && state.competitions.isNotEmpty) {
-          context.read<TeamCubit>().fetchBestTeam(competition: state.competitions.first);
+        body: BlocBuilder<CompetitionCubit, CompetitionState>(
+          builder: (BuildContext context, CompetitionState competitionState) {
+            if (competitionState is CompetitionLoadFailure) {
+              return const _FailedCompetitionState();
             }
-      },
-      builder: (BuildContext context, CompetitionState competitionState) {
-        if (competitionState is CompetitionLoadFailure) {
-          return const _FailedCompetitionState();
-        }
-        final List<Widget> competitions = _computeCompetition(competitionState);
-        return PageView.builder(
-          itemCount: competitions.length,
-          onPageChanged: (page) => _fetchTeam(competitionState, page),
-          itemBuilder: (BuildContext context, int index) {
-            return competitions[index];
+            final List<Widget> competitions = _computeCompetition(competitionState);
+            return PageView.builder(
+              itemCount: competitions.length,
+              itemBuilder: (BuildContext context, int index) => competitions[index],
+            );
           },
-        );
-      },
-    ),
-  );
-
-  void _fetchTeam(
-    CompetitionState competitionState,
-    int currentPage,
-  ) =>
-      competitionState is CompetitionLoadSuccess
-          ? context.read<TeamCubit>().fetchBestTeam(
-                competition: competitionState.competitions[currentPage],
-              )
-          : null;
+        ),
+      );
 
   List<Widget> _computeCompetition(CompetitionState competitionState) {
     return competitionState is CompetitionLoadSuccess
         ? competitionState.competitions
             .map(
-              (currentCompetition) => _CompetitionAndTeam(currentCompetition: currentCompetition),
+              (Competition currentCompetition) => BlocProvider(
+                create: (_) => TeamCubit(getTeamUseCase: appInjector(), getMatchesUseCase: appInjector()),
+                child: _CompetitionAndTeam(currentCompetition: currentCompetition),
+              ),
             )
             .toList(growable: false)
         : [];
@@ -88,7 +71,7 @@ class _FailedCompetitionState extends StatelessWidget {
   }
 }
 
-class _CompetitionAndTeam extends StatelessWidget {
+class _CompetitionAndTeam extends StatefulWidget {
   const _CompetitionAndTeam({
     Key? key,
     required Competition currentCompetition,
@@ -98,25 +81,36 @@ class _CompetitionAndTeam extends StatelessWidget {
   final Competition _currentCompetition;
 
   @override
+  State<_CompetitionAndTeam> createState() => _CompetitionAndTeamState();
+}
+
+class _CompetitionAndTeamState extends State<_CompetitionAndTeam> {
+  @override
+  void initState() {
+    context.read<TeamCubit>().fetchBestTeam(competition: widget._currentCompetition);
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 16),
+      margin: const EdgeInsets.symmetric(horizontal: Dimens.halfPadding),
       child: SingleChildScrollView(
         child: Column(
           mainAxisSize: MainAxisSize.max,
           children: [
-            CompetitionHeader(comp: _currentCompetition),
+            CompetitionHeader(comp: widget._currentCompetition),
             BlocBuilder<TeamCubit, TeamState>(
               builder: (buildContext, state) {
                 if (state is TeamLoadInProgress) {
                   return const CircularLoading();
                 }
                 if (state is TeamLoadSuccess) {
-                  return _TeamSuccessPage(team: state.team);
+                  return _TeamSuccess(team: state.team);
                 }
                 if (state is TeamLoadFailed) {
-                  return _TeamPageFailed(
-                    competition: _currentCompetition,
+                  return _TeamFailed(
+                    competition: widget._currentCompetition,
                     errorMessage: state.errorMessage,
                   );
                 }
@@ -133,8 +127,50 @@ class _CompetitionAndTeam extends StatelessWidget {
   }
 }
 
-class _TeamPageFailed extends StatelessWidget {
-  const _TeamPageFailed({
+class _TeamSuccess extends StatelessWidget {
+  const _TeamSuccess({
+    Key? key,
+    required Team team,
+  })  : _team = team,
+        super(key: key);
+
+  final Team _team;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisSize: MainAxisSize.max,
+      children: [
+        ClubTeam(team: _team),
+        if (_team.squad?.isNotEmpty == true)
+          Card(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(Dimens.mediumPadding),
+                  child: Text(
+                    I18n.current.team_squad,
+                    style: const TextStyle(
+                      fontStyle: FontStyle.italic,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+                Players(squad: _team.squad!)
+              ],
+            ),
+          )
+        else
+          const _NoSelection()
+      ],
+    );
+  }
+}
+
+class _TeamFailed extends StatelessWidget {
+  const _TeamFailed({
     Key? key,
     required Competition competition,
     required String errorMessage,
@@ -152,7 +188,7 @@ class _TeamPageFailed extends StatelessWidget {
         mainAxisSize: MainAxisSize.max,
         children: [
           Padding(
-            padding: const EdgeInsets.all(Dimens.largePadding),
+            padding: const EdgeInsets.all(Dimens.mediumPadding),
             child: Text(
               _errorMessage,
               style: const TextStyle(
@@ -163,9 +199,9 @@ class _TeamPageFailed extends StatelessWidget {
           ),
           Padding(
             padding: const EdgeInsets.only(
-              top: Dimens.largePadding,
-              left: Dimens.largePadding,
-              right: Dimens.largePadding,
+              top: Dimens.mediumPadding,
+              left: Dimens.mediumPadding,
+              right: Dimens.mediumPadding,
             ),
             child: RefreshIndicator(
               onRefresh: () => context.read<TeamCubit>().fetchBestTeam(competition: _competition),
@@ -191,7 +227,7 @@ class _TeamNoMatchesYet extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       child: Padding(
-        padding: const EdgeInsets.all(Dimens.largePadding),
+        padding: const EdgeInsets.all(Dimens.mediumPadding),
         child: Text(
           I18n.current.team_noWinnerYet,
           style: const TextStyle(
@@ -204,70 +240,39 @@ class _TeamNoMatchesYet extends StatelessWidget {
   }
 }
 
-class _TeamSuccessPage extends StatelessWidget {
-  const _TeamSuccessPage({
+class _NoSelection extends StatelessWidget {
+  const _NoSelection({
     Key? key,
-    required Team team,
-  })  : _team = team,
-        super(key: key);
-
-  final Team _team;
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      mainAxisSize: MainAxisSize.max,
-      children: [
-        ClubTeam(team: _team),
-        if (_team.squad?.isNotEmpty == true)
-          Card(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Padding(
-                  padding: EdgeInsets.all(Dimens.largePadding),
-                  child: Text(
-                    'Current squad : ',
-                    style: TextStyle(
-                      fontStyle: FontStyle.italic,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
-                Players(squad: _team.squad!)
-              ],
+    return Card(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Padding(
+            padding: EdgeInsets.all(Dimens.mediumPadding),
+            child: Text(
+              'No selection for now!',
+              style: TextStyle(
+                fontStyle: FontStyle.italic,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+          Align(
+            alignment: Alignment.bottomCenter,
+            child: Padding(
+              padding: const EdgeInsets.all(Dimens.mediumPadding),
+              child: SvgPicture.asset(
+                'assets/svg/nosquad.svg',
+                fit: BoxFit.fitHeight,
+              ),
             ),
           )
-        else
-          Card(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Padding(
-                  padding: EdgeInsets.all(Dimens.largePadding),
-                  child: Text(
-                    'No selection for now!',
-                    style: TextStyle(
-                      fontStyle: FontStyle.italic,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
-                Align(
-                  alignment: Alignment.bottomCenter,
-                  child: Padding(
-                    padding: const EdgeInsets.all(Dimens.largePadding),
-                    child: SvgPicture.asset(
-                      'assets/svg/nosquad.svg',
-                      fit: BoxFit.fitHeight,
-                    ),
-                  ),
-                )
-              ],
-            ),
-          )
-      ],
+        ],
+      ),
     );
   }
 }
