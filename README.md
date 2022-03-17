@@ -1,4 +1,4 @@
-# flutball (BT interview test)
+# Flutball
 [![codecov](https://codecov.io/gh/nsalleron/BT_interview/branch/master/graph/badge.svg?token=5XL1G6ASCW)](https://codecov.io/gh/nsalleron/BT_interview)
 [![Flutter](https://github.com/nsalleron/BT_interview/actions/workflows/ci.yml/badge.svg)](https://github.com/nsalleron/BT_interview/actions/workflows/ci.yml)
 
