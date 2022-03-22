@@ -2,12 +2,17 @@ import 'package:dio/dio.dart';
 import 'package:dio_http_cache/dio_http_cache.dart';
 import 'package:flutball/core/utils/constants.dart';
 import 'package:flutball/data/datasources/remote/football_api_service.dart';
+import 'package:flutball/data/datasources/remote/image_api_service.dart';
 import 'package:flutball/data/repositories/football_repository.dart';
 import 'package:flutball/data/repositories/football_repository_impl.dart';
+import 'package:flutball/data/repositories/image_repository.dart';
+import 'package:flutball/data/repositories/image_repository_impl.dart';
 import 'package:flutball/domain/usecases/get_competitions_usecase.dart';
+import 'package:flutball/domain/usecases/get_image_usecase.dart';
 import 'package:flutball/domain/usecases/get_match_usecase.dart';
 import 'package:flutball/domain/usecases/get_team_usecase.dart';
 import 'package:flutball/presentation/competition/logic/competition_cubit.dart';
+import 'package:flutball/presentation/competition/logic/image_fetcher_cubit.dart';
 import 'package:flutball/presentation/competition/logic/team_cubit.dart';
 import 'package:get_it/get_it.dart';
 
@@ -23,8 +28,14 @@ final GetIt appInjector = GetIt.instance
   ..registerLazySingleton<FootballApiService>(
     () => FootballApiService(appInjector()),
   )
+  ..registerLazySingleton<ImageApiService>(
+    () => ImageApiService(appInjector()),
+  )
   ..registerLazySingleton<FootballRepository>(
     () => FootballRepositoryImpl(footballApiService: appInjector()),
+  )
+  ..registerLazySingleton<ImageRepository>(
+    () => ImageRepositoryImpl(imageApiService: appInjector()),
   )
   ..registerLazySingleton<GetMatchesUseCase>(
     () => GetMatchesUseCase(appInjector()),
@@ -33,9 +44,15 @@ final GetIt appInjector = GetIt.instance
   ..registerLazySingleton<GetCompetitionUseCase>(
     () => GetCompetitionUseCase(appInjector()),
   )
+  ..registerLazySingleton<GetImageUseCase>(
+    () => GetImageUseCase(appInjector()),
+  )
   ..registerLazySingleton<CompetitionCubit>(
     () => CompetitionCubit(getCompetitionUseCase: appInjector()),
   )
   ..registerLazySingleton(
     () => TeamCubit(getTeamUseCase: appInjector(), getMatchesUseCase: appInjector()),
+  )
+  ..registerLazySingleton(
+    () => ImageFetcherCubit(getImageUseCase: appInjector()),
   );

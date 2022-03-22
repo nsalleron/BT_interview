@@ -55,7 +55,7 @@ void main() {
 
       //when
       final result = httpResponse
-          .whenSuccessOrDefaultError((response) => response?.competitions);
+          .whenSuccessOrDefaultError((response) => response.competitions);
 
       //Then
       expect(result.data, null);

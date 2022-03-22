@@ -4,10 +4,11 @@ import 'package:dio/dio.dart';
 import 'package:flutball/core/resources/data_state.dart';
 import 'package:retrofit/retrofit.dart';
 
-extension HttpResponseExtension<T> on HttpResponse<T> {
+extension HttpResponseExtension<T> on HttpResponse<T?>{
   DataState<S> whenSuccessOrDefaultError<S>(OnSuccess<T, S> success) {
-    if (response.statusCode == HttpStatus.ok) {
-      return DataSuccess(success(data));
+    if (response.statusCode == HttpStatus.ok || data != null) {
+      // ignore: null_check_on_nullable_type_parameter
+      return DataSuccess(success(data!));
     }
     return DataFailed(
       DioError(

@@ -19,7 +19,7 @@ class FootballRepositoryImpl implements FootballRepository {
     required FootballApiService footballApiService,
     Options? footballRepositoryOptions,
   })  : _footballApiService = footballApiService,
-        _footballRepositoryOptions = footballRepositoryOptions ?? buildCacheOptions(const Duration(minutes: 5));
+        _footballRepositoryOptions = footballRepositoryOptions ?? buildCacheOptions(const Duration(minutes: 10));
 
   final FootballApiService _footballApiService;
   final Options _footballRepositoryOptions;

@@ -1,7 +1,9 @@
 import 'package:flutball/core/utils/dimens.dart';
+import 'package:flutball/injector.dart';
+import 'package:flutball/presentation/competition/logic/image_fetcher_cubit.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:path/path.dart' as p;
 
 const _edgeSize = 100.0;
 
@@ -12,50 +14,41 @@ class CompetitionIcon extends StatelessWidget {
   }) : super(key: key);
 
   final String? url;
+  static const icon = Icon(
+    Icons.report_problem,
+    size: _edgeSize,
+  );
 
   @override
   Widget build(BuildContext context) => Padding(
         padding: const EdgeInsets.all(Dimens.halfPadding),
-        child: () {
-          if (url == null) {
-            return const Icon(
-              Icons.report_problem,
-              size: _edgeSize,
-            );
-          }
-          if (p.extension(url!) != '.svg') {
-            return Image.network(
-              url!,
-              height: _edgeSize,
-              width: _edgeSize,
-              fit: BoxFit.fitWidth,
-            );
-          } else {
-            return _NetworkIcon(url: url!);
-          }
-        }(),
+        child: BlocBuilder<ImageFetcherCubit, ImageFetcherState>(
+          bloc: ImageFetcherCubit(getImageUseCase: appInjector())..fetchImage(url),
+          builder: (BuildContext context, ImageFetcherState state) {
+            if (state is ImageFetcherLoadInProgress) {
+              return const CircularProgressIndicator();
+            }
+
+            if (state is ImageFetcherLoadSuccess) {
+              if (state.isSvg) {
+                return SvgPicture.memory(
+                  state.imageData,
+                  width: _edgeSize,
+                  height: _edgeSize,
+                  fit: BoxFit.fitWidth,
+                );
+              } else {
+                return Image.memory(
+                  state.imageData,
+                  height: _edgeSize,
+                  width: _edgeSize,
+                  fit: BoxFit.fitWidth,
+                  errorBuilder: (context, error, stackTrace) => icon,
+                );
+              }
+            }
+            return icon;
+          },
+        ),
       );
-}
-
-class _NetworkIcon extends StatelessWidget {
-  const _NetworkIcon({
-    Key? key,
-    required this.url,
-  }) : super(key: key);
-
-  final String url;
-
-  @override
-  Widget build(BuildContext context) {
-    return SvgPicture.network(
-      url,
-      width: _edgeSize,
-      height: _edgeSize,
-      fit: BoxFit.fitWidth,
-      placeholderBuilder: (BuildContext context) => const Icon(
-        Icons.report_problem,
-        size: _edgeSize,
-      ),
-    );
-  }
 }

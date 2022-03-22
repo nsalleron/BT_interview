@@ -1,7 +1,6 @@
 import 'package:flutball/injector.dart';
 import 'package:flutball/presentation/competition/competition_page.dart';
 import 'package:flutball/presentation/competition/logic/competition_cubit.dart';
-import 'package:flutball/presentation/competition/logic/team_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';

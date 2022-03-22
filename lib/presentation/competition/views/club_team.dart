@@ -22,7 +22,7 @@ class ClubTeam extends StatelessWidget {
     return Card(
       child: Container(
         padding: const EdgeInsets.all(Dimens.halfPadding),
-        decoration: gradient.isNotEmpty
+        decoration: gradient.isNotEmpty && gradient.length > 2
             ? BoxDecoration(
                 gradient: LinearGradient(
                   begin: Alignment.topRight,
@@ -69,7 +69,7 @@ class ClubTeam extends StatelessWidget {
                 ],
               ),
             ),
-            CompetitionIcon(url: _team.crestUrl)
+            CompetitionIcon(url: _team.crestUrl ??'')
           ],
         ),
       ),
